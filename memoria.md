@@ -70,6 +70,12 @@
 
 ## Alterações realizadas
 
+- **2026-11-13** · **Projeto enviado ao GitHub** (pedido do dono): `https://github.com/weeog/myportfolio` (repositório **público**, branch `main`, 1 commit, 58 arquivos, ~100 MB). Autor do commit: `weeog <weeog@users.noreply.github.com>` (config local do repositório, para não expor o e-mail pessoal). Login feito pelo dono no navegador (Git Credential Manager).
+  - **Ficam fora** (`.gitignore`): `imagens/`, `para-subir/`, `referencias/`, `skills/`, `cam ref/` (originais acima de 100 MB, entregas e materiais de terceiros) e `.claude/settings.local.json`.
+  - **Fontes demo no repositório (decisão do dono, 2026-11-13):** o primeiro envio deixou as fontes de fora (uso pessoal, sem licença para redistribuir). O dono pediu para subi-las mesmo assim, "mesmo sendo demo", porque devem estar no site (a hospedagem é a Vercel). Entraram `assets/fonts/rodmolle-condensed-demo.otf`, `.ttf` e `milesdane-trial.otf`, e o `LEIA-ME.txt` saiu. **Risco aceito pelo dono:** o repositório é público, então as fontes demo estão redistribuídas, e o site no ar usa fontes de uso pessoal comercialmente. A compra das licenças continua pendente e bloqueante para publicar (ver Pendências).
+  - **Atenção:** o repositório é público e inclui `memoria.md` e `CLAUDE.md` (notas internas, contatos e caminhos locais), as specs e todos os vídeos de `assets/video/`. Na Vercel, esses arquivos viram endereços públicos se o projeto for ligado ao repositório sem um `.vercelignore` (proposto, ainda não criado).
+  - **Publicação/deploy segue com o dono:** o repositório não é hospedagem. As fontes licenciadas continuam sendo o bloqueio para publicar o site.
+
 - **2026-11-12** · **Varredura (impeccable + safe-refactor), parte 2 de 2: fluidez e teste nos quatro tamanhos.** Feito depois da parte 1 (abaixo).
   - **Título do hero:** `.linha + .linha { margin-top: -.24em; }` (`componentes.css`). O título dividido em linhas ficava 26 px mais alto que o original no desktop (margens negativas que colapsam): a página pulava no fim da entrada e o gatilho que fixa o showreel era medido em 738 em vez de 712 em recargas rápidas. Agora o título dividido mede 409,1 px contra 409,2 px do original, e o gatilho nasce em 712.
   - **Cursor:** o laço de quadros só roda enquanto o disco se move (`efeitos.js`). Parado, 0 quadros (antes rodava sem parar).

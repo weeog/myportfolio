@@ -1,11 +1,5 @@
 # wee. — o que NÃO vai para o repositório
 
-# Fontes demo/trial (Rodmolle e Milesdane): licença "uso pessoal", não podem ser redistribuídas
-# em repositório público. Coloque aqui os arquivos licenciados (woff2) quando forem comprados.
-# Veja assets/fonts/LEIA-ME.txt.
-assets/fonts/*
-!assets/fonts/LEIA-ME.txt
-
 # Material de trabalho do dono: originais pesados (acima de 100 MB, limite do GitHub),
 # entregas em andamento e materiais de terceiros. Ficam só na máquina.
 /imagens/
