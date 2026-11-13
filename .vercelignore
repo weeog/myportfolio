@@ -1,0 +1,8 @@
+# wee. — arquivos que ficam no GitHub mas NÃO vão para o site na Vercel.
+# São notas internas e configuração local: não devem virar endereços públicos do site.
+memoria.md
+CLAUDE.md
+specs/
+.claude/
+.gitignore
+.vercelignore
