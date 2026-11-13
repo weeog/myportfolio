@@ -1,0 +1,554 @@
+/* =========================================================
+   wee. — layout das seções (do celular para cima)
+   As animações de scroll ficam em animacoes.js.
+   ========================================================= */
+
+/* ---------- 1. Hero ---------- */
+.hero { padding-top: calc(72px + var(--s-7)); padding-bottom: var(--s-7); }
+.hero__conteudo { display: grid; gap: var(--s-6); }
+.hero__titulo { max-width: 15ch; font-size: clamp(52px, 13vw, 96px); line-height: .92; }
+/* Dentro do hero, o itálico (Milesdane) fica menor e com respiro, para não vazar da linha */
+.hero__titulo .acento { font-size: .8em; line-height: 1; display: inline-block; padding: .02em .08em .06em 0; margin-right: -.02em; }
+.hero__frase { display: inline; }
+.hero__ctas { display: grid; gap: var(--s-3); }
+
+/* Palavra "criança" em blocos de alfabeto 3D */
+.blocos { display: inline-block; white-space: nowrap; }
+.nao-quebrar { white-space: nowrap; }
+.blocos__letras {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: .05em;
+  padding: .04em .06em .1em;
+  vertical-align: .06em;
+  perspective: 900px;
+  perspective-origin: 50% 40%;
+}
+.bloco {
+  --s: .6em;
+  position: relative;
+  display: inline-block;
+  width: var(--s);
+  height: var(--s);
+  transform-style: preserve-3d;
+  transform: rotateX(-8deg) rotateY(-14deg);
+  animation: wee-bloco 4.2s ease-in-out infinite;
+  animation-delay: calc(var(--i) * -0.55s);
+  margin-block: .08em;
+}
+.bloco > * { position: absolute; inset: 0; }
+.bloco__frente {
+  display: grid;
+  place-items: center;
+  background: var(--cor);
+  color: var(--c-tinta);
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: .78em;
+  line-height: 1;
+  border-radius: .05em;
+  transform: translateZ(calc(var(--s) / 2));
+  box-shadow: inset 0 0 0 .03em rgba(20, 18, 16, .25);
+}
+.bloco__topo {
+  background: color-mix(in srgb, var(--cor) 72%, #fff);
+  transform: rotateX(90deg) translateZ(calc(var(--s) / 2));
+}
+.bloco__lado {
+  background: color-mix(in srgb, var(--cor) 58%, #000);
+  transform: rotateY(90deg) translateZ(calc(var(--s) / 2));
+}
+@keyframes wee-bloco {
+  0%, 100% { transform: rotateX(-8deg) rotateY(-14deg) translateY(0); }
+  35% { transform: rotateX(-4deg) rotateY(-6deg) translateY(-.05em); }
+  70% { transform: rotateX(-11deg) rotateY(-20deg) translateY(.02em); }
+}
+
+@media (min-width: 480px) {
+  .hero__ctas { display: flex; flex-wrap: wrap; }
+}
+@media (min-width: 768px) {
+  .hero { padding-top: calc(88px + var(--s-8)); padding-bottom: var(--s-8); }
+  .hero__titulo { max-width: none; font-size: clamp(56px, 8.4vw, 124px); }
+  .hero__frase { display: block; }
+}
+
+/* ---------- Palavra gigante atrás do conteúdo (Projetos e Meu Olhar) ----------
+   Mesma lógica do "PLAY": fica atrás de tudo e cresce com a rolagem (animacoes.js). */
+#projetos, #meu-olhar { isolation: isolate; position: relative; }
+.palavra-fundo {
+  position: absolute;
+  z-index: -1;
+  top: 14%;
+  left: 0;
+  right: 0;
+  margin: 0;
+  text-align: center;
+  white-space: nowrap;
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: clamp(90px, 20vw, 300px);
+  line-height: .8;
+  text-transform: uppercase;
+  color: var(--c-rec);
+  opacity: .14;
+  pointer-events: none;
+  user-select: none;
+  transform-origin: 50% 40%;
+  transition: opacity 180ms linear; /* troca de texto em Projetos (main.js) */
+}
+.palavra-fundo.troca { opacity: 0; }
+
+/* ---------- 2. Showreel ---------- */
+/* Showreel vertical (padrão): quadro 9:16, centralizado */
+.quadro[data-formato="9:16"] { aspect-ratio: 9 / 16; width: min(100%, 340px); margin-inline: auto; }
+@media (min-width: 1024px) {
+  .showreel .quadro[data-formato="9:16"] { width: min(34%, calc(72vh * 9 / 16)); }
+  .anim .showreel .quadro[data-formato="9:16"] { width: min(34%, calc((100vh - 300px) * 9 / 16)); }
+}
+/* isolation: a palavra com z-index -1 fica atrás de todo o conteúdo da seção */
+.showreel { position: relative; isolation: isolate; padding-top: clamp(130px, 20vh, 210px); padding-bottom: calc(var(--secao-y) + var(--r-painel)); overflow: clip; }
+.showreel__palavra {
+  position: relative;
+  z-index: -1;
+  transform-origin: 50% 50%;
+  margin-bottom: .3em; /* folga para a palavra inteira ficar visível acima do quadro */
+  text-align: center;
+  white-space: nowrap;
+  color: var(--c-rec);
+  user-select: none;
+}
+@media (min-width: 1024px) {
+  .showreel .quadro { width: 84%; margin-inline: auto; }
+
+  /* Com animação: a seção tem a altura de uma tela, para o quadro crescer até cobri-la */
+  .anim .showreel {
+    height: 100vh;
+    min-height: 640px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-block: clamp(150px, 22vh, 230px) var(--s-6); /* espaço abaixo do cabeçalho fixo */
+  }
+  /* PLAY fica atrás e centralizado, fora do fluxo: assim o quadro 9:16 cabe inteiro na tela de 100vh e não é cortado embaixo */
+  .anim .showreel__palavra {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    margin: -.4em 0 0; /* o texto tem line-height .8: -.4em centraliza a caixa */
+    font-size: min(var(--fs-gigante), 34vh);
+  }
+  .anim .showreel .quadro { width: min(84%, calc((100vh - 300px) * 16 / 9)); }
+}
+
+/* ---------- Laterais do showreel (só desktop) ----------
+   Dois vídeos com fundo transparente (APNG em loop), um de cada lado.
+   Sem espelho: cada lado tem o seu vídeo. Com movimento reduzido ficam ocultos. */
+.lateral { display: none; }
+@media (min-width: 1024px) {
+  .lateral {
+    display: block;
+    position: absolute;
+    z-index: 0;
+    top: 50%;
+    height: min(80vh, 632px);
+    width: auto;
+    aspect-ratio: 360 / 632;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+  .lateral--esquerda { left: clamp(16px, 3vw, 56px); }
+  .lateral--direita { right: clamp(16px, 3vw, 56px); }
+}
+@media (min-width: 1024px) and (prefers-reduced-motion: reduce) {
+  .lateral { display: none; }
+}
+
+/* ---------- 3. Sobre mim: documento de identificação (vibe verde) ---------- */
+.sobre-mim { padding-block: var(--secao-y); overflow: clip; }
+.documento {
+  position: relative;
+  max-width: 880px;
+  margin-inline: auto;
+  padding: clamp(18px, 3vw, 36px);
+  background-color: var(--c-pelicula);
+  background-image: repeating-radial-gradient(circle at 0 0, rgba(13, 40, 24, .035) 0 2px, transparent 2px 9px);
+  color: var(--c-luz);
+  border: 1.5px solid var(--c-luz);
+  border-radius: 18px;
+  box-shadow: 0 1px 0 rgba(13, 40, 24, .08), 0 22px 44px -26px rgba(13, 40, 24, .5);
+  transform: perspective(1200px) rotateX(0deg) rotateY(0deg);
+  transition: transform 500ms var(--ease-saida);
+}
+@media (hover: hover) and (pointer: fine) {
+  .documento:hover { transform: perspective(1200px) rotateX(2deg) rotateY(-2.5deg); }
+}
+.documento__corpo {
+  display: grid;
+  grid-template-columns: minmax(0, 38%) minmax(0, 1fr);
+  gap: var(--s-4);
+  margin-block: var(--s-5);
+}
+/* Moldura: passe-partout claro, linha verde interna e cantos de enquadramento.
+   Recorta o zoom da foto para não vazar da moldura. */
+.documento__foto {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  padding: 12px;
+  overflow: hidden;
+  border: 1.5px solid var(--c-luz);
+  background: var(--c-papel-2);
+  box-shadow: inset 0 0 0 1px rgba(13, 40, 24, .08), 0 10px 22px -14px rgba(13, 40, 24, .55);
+  align-self: start;
+}
+/* Contorno animado (SVG): base fina + uma luz verde que percorre a borda sem parar */
+.moldura {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+.moldura rect { fill: none; vector-effect: non-scaling-stroke; }
+.moldura__base {
+  stroke: var(--c-rec);
+  stroke-width: 1;
+  opacity: .45;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+}
+.moldura__luz {
+  stroke: var(--c-rec);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-dasharray: 14 86;
+  stroke-dashoffset: 0;
+  filter: drop-shadow(0 0 4px rgba(27, 94, 59, .55));
+  animation: wee-moldura-percorre 4.2s linear infinite;
+}
+.documento__foto.on .moldura__base {
+  animation: wee-moldura-desenha 1.2s cubic-bezier(.23, 1, .32, 1) forwards;
+}
+@keyframes wee-moldura-desenha { to { stroke-dashoffset: 0; } }
+@keyframes wee-moldura-percorre { to { stroke-dashoffset: -100; } }
+.documento__foto::after {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  pointer-events: none;
+  --c: var(--c-rec);
+  --l: 18px;
+  --t: 2px;
+  --m: 4px;
+  background:
+    linear-gradient(var(--c) 0 0) left var(--m) top var(--m) / var(--l) var(--t),
+    linear-gradient(var(--c) 0 0) left var(--m) top var(--m) / var(--t) var(--l),
+    linear-gradient(var(--c) 0 0) right var(--m) top var(--m) / var(--l) var(--t),
+    linear-gradient(var(--c) 0 0) right var(--m) top var(--m) / var(--t) var(--l),
+    linear-gradient(var(--c) 0 0) left var(--m) bottom var(--m) / var(--l) var(--t),
+    linear-gradient(var(--c) 0 0) left var(--m) bottom var(--m) / var(--t) var(--l),
+    linear-gradient(var(--c) 0 0) right var(--m) bottom var(--m) / var(--l) var(--t),
+    linear-gradient(var(--c) 0 0) right var(--m) bottom var(--m) / var(--t) var(--l);
+  background-repeat: no-repeat;
+}
+/* Entrada (ativada pelo JS ao rolar até o documento): a linha se desenha e os cantos surgem */
+.documento__foto.on::after { animation: wee-moldura-canto 800ms 380ms var(--ease-saida) both; }
+@keyframes wee-moldura-canto {
+  from { opacity: 0; transform: scale(1.3); }
+  to { opacity: 1; transform: scale(1); }
+}
+/* Rosto centralizado (x 50%, y 44% da foto) com zoom de 25% */
+.documento__foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 44%;
+  transform: scale(1.25);
+  transform-origin: 50% 44%;
+}
+.documento__campos { display: grid; align-content: start; }
+.documento__campos > div { padding: 8px 0; border-bottom: 1px dashed var(--c-fumaca); }
+.documento__campos dt { margin-bottom: 4px; }
+.documento__campos dd {
+  margin: 0;
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: clamp(20px, 3.4vw, 30px);
+  line-height: 1;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+.documento__bio {
+  padding-top: var(--s-4);
+  border-top: 1.5px solid var(--c-luz);
+  font-size: var(--fs-corpo-l);
+  line-height: 1.55;
+  max-width: none;
+}
+@media (min-width: 768px) {
+  .documento__corpo { grid-template-columns: 200px minmax(0, 1fr); gap: var(--s-6); }
+}
+
+/* Chapéu de palha sobre o "O" de One Piece (ilustração, não substitui o texto) */
+/* Espaço reservado acima da palavra: o chapéu fica nessa faixa e não cobre a linha de cima */
+.onepiece { position: relative; display: inline-block; white-space: nowrap; padding-top: .5em; }
+.onepiece__o { display: inline-block; }
+.onepiece__chapeu {
+  position: absolute;
+  left: -.08em;
+  top: .02em;
+  width: .9em;
+  height: auto;
+  pointer-events: none;
+  animation: wee-chapeu 3.4s ease-in-out infinite;
+}
+.onepiece__chapeu svg { display: block; width: 100%; height: auto; overflow: visible; }
+@keyframes wee-chapeu {
+  0%, 100% { transform: translateY(0) rotate(-6deg); }
+  50% { transform: translateY(-.06em) rotate(-2deg); }
+}
+
+/* ---------- 4. Projetos: carrossel com setas (mesma lógica de Meu Olhar) ---------- */
+.galeria__trilho { list-style: none; margin: 0; padding: 0; }
+.galeria--projetos { margin-top: var(--s-6); }
+.galeria--projetos .galeria__trilho { aspect-ratio: 1 / 1.05; } /* celular: os cards têm mídia 1:1 e título */
+.galeria--projetos .galeria__item .card__titulo { font-size: clamp(16px, 1.6vw, 22px); }
+
+.regua {
+  display: flex;
+  height: 40px;
+  margin-top: var(--s-2);
+  overflow: hidden;
+  color: var(--fg-mudo);
+  background:
+    repeating-linear-gradient(90deg, var(--fg-mudo) 0 1px, transparent 1px 120px) left top / 100% 14px no-repeat,
+    repeating-linear-gradient(90deg, var(--borda) 0 1px, transparent 1px 12px) left top / 100% 7px no-repeat;
+  border-top: 1px solid var(--borda);
+}
+.regua .timecode { flex: none; width: 240px; padding: 20px 0 0 6px; font-size: 11px; }
+
+/* Tablet e desktop: carrossel mais alto (cards com título) */
+@media (min-width: 768px) {
+  .galeria--projetos .galeria__trilho { aspect-ratio: 1 / 0.7; }
+}
+
+/* ---------- 5. Meu Olhar: fotografias (vibe verde) ---------- */
+.meu-olhar { padding-block: var(--secao-y); overflow: clip; }
+.meu-olhar .secao__cabeca { margin-bottom: var(--s-5); }
+/* Galeria: 3 fotos visíveis (centro e duas vizinhas). As outras ficam escondidas. */
+.galeria {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: var(--s-4);
+  margin-top: var(--s-6);
+  border-radius: var(--r-l);
+  outline-offset: 8px;
+}
+.galeria:focus-visible { outline-color: var(--foco); }
+/* Curva "saída forte" (Emil Kowalski): mais rápida no começo que o ease-out padrão */
+.galeria { --ease-galeria: cubic-bezier(.23, 1, .32, 1); }
+.galeria__trilho {
+  position: relative;
+  width: 100%;
+  max-width: 820px;
+  aspect-ratio: 1 / 0.78;
+}
+.galeria__item {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 50%;
+  margin: 0;
+  transform: translate(-50%, -50%) scale(.7);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  /* curva de saída forte (Emil): entra rápido e assenta suave; nada de ease-in */
+  transition:
+    left 560ms var(--ease-galeria),
+    width 560ms var(--ease-galeria),
+    transform 560ms var(--ease-galeria),
+    filter 560ms var(--ease-galeria),
+    opacity 420ms linear,
+    visibility 0s linear 560ms;
+}
+.galeria__item.is-centro {
+  left: 50%;
+  width: 52%;
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  filter: none; /* a foto principal fica nítida */
+  z-index: 3;
+}
+.galeria__item.is-esq,
+.galeria__item.is-dir {
+  width: 34%;
+  opacity: .8;
+  visibility: visible;
+  pointer-events: auto;
+  cursor: pointer;
+  filter: blur(2.5px); /* laterais desfocadas */
+  z-index: 2;
+  transition-delay: 0s;
+}
+.galeria__item.is-esq { left: 19%; transform: translate(-50%, -50%) rotate(-5deg) scale(.92); }
+.galeria__item.is-dir { left: 81%; transform: translate(-50%, -50%) rotate(5deg) scale(.92); }
+/* Ao passar o mouse (só com mouse), a lateral clareia e convida a clicar */
+@media (hover: hover) and (pointer: fine) {
+  .galeria__item.is-esq:hover,
+  .galeria__item.is-dir:hover { opacity: 1; filter: blur(1px); }
+}
+/* Setas laterais */
+.galeria__seta {
+  position: absolute;
+  top: 50%;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  border: 1.5px solid var(--c-luz);
+  background: var(--c-pelicula);
+  color: var(--c-luz);
+  cursor: pointer;
+  transition: background-color 200ms linear, color 200ms linear, transform 200ms var(--ease-saida);
+}
+.galeria__seta svg { width: 22px; height: 22px; }
+.galeria__seta--esq { left: 0; }
+.galeria__seta--dir { right: 0; }
+.galeria__seta:hover { background: var(--c-luz); color: var(--c-tinta); }
+.galeria__seta:active { transform: translateY(-50%) scale(.95); }
+.galeria__contador {
+  font-size: var(--fs-timecode);
+  font-weight: 600;
+  letter-spacing: .08em;
+  font-variant-numeric: tabular-nums;
+  color: var(--fg-mudo);
+}
+@media (min-width: 768px) {
+  .galeria__seta { width: 60px; height: 60px; }
+  .galeria__seta--esq { left: 4%; }
+  .galeria__seta--dir { right: 4%; }
+}
+@media (min-width: 1024px) {
+  .galeria { margin-top: var(--s-7); }
+}
+
+/* ---------- 6. Contato ---------- */
+.cta-final { padding-bottom: calc(var(--secao-y) + var(--s-5)); }
+.cta-final__grade { display: grid; gap: var(--s-5); justify-items: start; }
+/* Botão de contato só com a logo do WhatsApp (sem texto) */
+.btn--logo {
+  width: 96px;
+  height: 96px;
+  min-height: 96px;
+  padding: 0;
+  border-radius: 50%;
+  margin-top: var(--s-3);
+}
+.btn--logo .icone { width: 46px; height: 46px; }
+.btn--logo:hover { transform: scale(1.06); }
+.contatos {
+  display: grid;
+  gap: var(--s-4);
+  width: 100%;
+  margin-top: var(--s-7);
+  padding-top: var(--s-5);
+  border-top: 1px solid var(--borda);
+}
+.contatos__item { display: grid; gap: var(--s-2); }
+/* Marcas oficiais (PNG/SVG com fundo transparente) no lugar dos rótulos de texto */
+.marca { display: block; height: 22px; width: auto; }
+.marca--instagram { height: 40px; margin-block: -9px; }
+.menu__contatos .marca { height: 20px; }
+.contatos dd { font-size: var(--fs-corpo-l); font-weight: 500; overflow-wrap: anywhere; }
+.contatos dd:not(:has(a)) { min-height: 44px; display: flex; align-items: center; }
+
+@media (min-width: 480px) {
+  .contatos { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-5); }
+}
+@media (min-width: 1024px) {
+  .contatos { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+/* ---------- 404 ---------- */
+.erro {
+  display: grid;
+  gap: var(--s-5);
+  align-content: center;
+  justify-items: start;
+  min-height: 100vh;
+  min-height: 100svh;
+  padding-block: var(--s-8);
+}
+
+/* =========================================================
+   Fundo degradê
+   As seções acima de "Vamos trabalhar" ficam transparentes para o fundo aparecer.
+   O contato (papel) e o rodapé continuam sólidos.
+   ========================================================= */
+.hero,
+.showreel,
+.sobre-mim,
+.painel--grafite,
+.meu-olhar { background-color: transparent; }
+.menu { background-color: var(--c-pelicula); }
+
+.fundo { position: fixed; inset: 0; z-index: -2; overflow: hidden; pointer-events: none; }
+.fundo__ref { position: absolute; inset: 0; }
+.fundo__luz {
+  position: absolute;
+  width: 95vmax;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--cor) 0%, rgba(0, 0, 0, 0) 64%);
+  opacity: .5;
+  will-change: transform;
+}
+.fundo__luz--a { --cor: #FF4D1F; top: -38%; left: -26%; }
+.fundo__luz--b { --cor: #FFB13B; top: 18%; right: -34%; width: 80vmax; opacity: .34; }
+.fundo__luz--c { --cor: #7A2412; bottom: -40%; left: 10%; width: 110vmax; opacity: .7; }
+/* Deriva lenta (só quando não há GSAP ou o movimento não está reduzido) */
+.anim .fundo__luz { animation: wee-deriva 26s ease-in-out infinite alternate; }
+.anim .fundo__luz--b { animation-duration: 34s; animation-direction: alternate-reverse; }
+@keyframes wee-deriva {
+  from { transform: translate(0, 0) scale(1); }
+  to { transform: translate(6vw, 5vh) scale(1.08); }
+}
+
+
+/* =========================================================
+   Mudança de vibe (identidade reutilizável)
+   Verde + off-white. Aplicada como classe local (.vibe-verde)
+   e, na seção "Meu Olhar", como transformação global na rolagem
+   (animacoes.js → VIBE_VERDE). Mantenha os valores iguais nos dois.
+   ========================================================= */
+.vibe-verde {
+  --c-pelicula: #0F3B26;
+  --c-grafite: #15492F;
+  --c-fumaca: #2D6B4B;
+  --c-luz: #F0ECE0;
+  --c-mudo-escuro: #B8D2C0;
+  --c-rec: #8FE39C;
+  --c-tungstenio: #C9F2A8;
+}
+
+/* O documento de identificação é um papel claro, mesmo dentro da vibe verde */
+.documento {
+  --c-pelicula: #EFEBDF;
+  --c-grafite: #E2DDD0;
+  --c-fumaca: #B7B09E;
+  --c-luz: #0D2818;
+  --c-mudo-escuro: #4D5E50;
+  --c-rec: #1B5E3B;
+  --c-tungstenio: #1B5E3B;
+}

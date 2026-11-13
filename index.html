@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>wee. — Filmes para festas, eventos e motions</title>
+  <meta name="description" content="wee. — Com a visão de um diretor e a criatividade de uma criança, seu projeto vira filme! Botucatu e região.">
+  <meta name="theme-color" content="#0F0E0D">
+  <!-- Marca a página para animar, exceto com "reduzir movimento" (design.md §12.3). -->
+  <script>if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('js-anim');</script>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="icon" href="./assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="./assets/fonts/rodmolle-condensed-demo.otf" as="font" type="font/otf" crossorigin>
+  <link rel="stylesheet" href="./assets/css/tokens.css">
+  <link rel="stylesheet" href="./assets/css/base.css">
+  <link rel="stylesheet" href="./assets/css/componentes.css">
+  <link rel="stylesheet" href="./assets/css/secoes.css">
+</head>
+<body class="tema-escuro">
+
+  <!-- Fundo de degradê desfocado: fica atrás de tudo e se move com a rolagem até "Vamos trabalhar" -->
+  <div class="fundo" aria-hidden="true">
+    <div class="fundo__ref" data-fundo="a"><span class="fundo__luz fundo__luz--a"></span></div>
+    <div class="fundo__ref" data-fundo="b"><span class="fundo__luz fundo__luz--b"></span></div>
+    <div class="fundo__ref" data-fundo="c"><span class="fundo__luz fundo__luz--c"></span></div>
+  </div>
+
+  <!-- Ícones (traço único) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="i-whats" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.6 20.4l1.2-4.1a8.4 8.4 0 1 1 3.1 3z"/><path d="M9.3 8.8c0 3.3 2.6 5.9 5.9 5.9"/></symbol>
+      <symbol id="i-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.2v13.6a.6.6 0 0 0 .9.5l11-6.8a.6.6 0 0 0 0-1L8.9 4.7a.6.6 0 0 0-.9.5z"/></symbol>
+      <symbol id="i-pausa" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></symbol>
+      <symbol id="i-fechar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+      <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 9h16M4 15h16"/></symbol>
+    </defs>
+  </svg>
+
+  <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+  <!-- HEADER FIXO -->
+  <header class="topo tema-escuro" data-topo>
+    <a class="logo" href="./" aria-label="wee. — início"><img src="./assets/img/logo-luz.png" alt="" width="2120" height="1337"></a>
+    <nav class="topo__nav" aria-label="Principal">
+      <a class="btn btn--primario btn--compacto topo__cta" data-wa data-origem="header" href="#contato">
+        <svg class="icone" aria-hidden="true"><use href="#i-whats"/></svg>
+        WhatsApp
+      </a>
+      <button class="btn-icone" type="button" data-menu-abrir aria-expanded="false" aria-controls="menu" aria-label="Abrir menu">
+        <svg class="icone" aria-hidden="true"><use href="#i-menu"/></svg>
+      </button>
+    </nav>
+  </header>
+
+  <!-- MENU EM TELA CHEIA -->
+  <div class="menu tema-escuro grao" id="menu" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+    <div class="menu__topo">
+      <a class="logo" href="./" aria-label="wee. — início"><img src="./assets/img/logo-luz.png" alt="" width="2120" height="1337"></a>
+      <button class="btn-icone" type="button" data-menu-fechar aria-label="Fechar menu">
+        <svg class="icone" aria-hidden="true"><use href="#i-fechar"/></svg>
+      </button>
+    </div>
+    <nav class="menu__nav" aria-label="Menu">
+      <a class="menu__link" href="#showreel">Showreel</a>
+      <a class="menu__link" href="#sobre-mim">Sobre mim</a>
+      <a class="menu__link" href="#projetos">Projetos</a>
+      <a class="menu__link" href="#meu-olhar">Meu Olhar</a>
+      <a class="menu__link" href="#contato">Contato</a>
+    </nav>
+    <div class="menu__rodape">
+      <a class="btn btn--primario" data-wa data-origem="menu" href="#contato">
+        <svg class="icone" aria-hidden="true"><use href="#i-whats"/></svg>
+        WhatsApp
+      </a>
+      <ul class="menu__contatos" role="list">
+        <li><img class="marca marca--gmail" src="./assets/img/marca-gmail.png" alt="E-mail (Gmail)" width="686" height="512"> <a class="link" data-contato="email" href="#contato">[PREENCHER: e-mail]</a></li>
+        <li><img class="marca marca--instagram" src="./assets/img/marca-instagram.svg" alt="Instagram" width="560" height="400"> <a class="link" data-contato="instagram" href="#contato">[PREENCHER: Instagram]</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <main id="conteudo">
+
+    <!-- 1. HERO -->
+    <section class="hero tema-escuro grao" aria-labelledby="hero-titulo">
+      <div class="container hero__conteudo">
+        <h1 class="t-xl hero__titulo" id="hero-titulo"><span class="hero__frase">Com a visão de um <span class="acento">diretor</span></span> <span class="hero__frase">e a criatividade de uma <span class="nao-quebrar"><span class="blocos"><span class="sr-only">criança</span><span class="blocos__letras" aria-hidden="true"><span class="bloco" style="--i:0;--cor:var(--c-rec)"><span class="bloco__frente">c</span><span class="bloco__topo"></span><span class="bloco__lado"></span></span><span class="bloco" style="--i:1;--cor:var(--c-tungstenio)"><span class="bloco__frente">r</span><span class="bloco__topo"></span><span class="bloco__lado"></span></span><span class="bloco" style="--i:2;--cor:var(--c-luz)"><span class="bloco__frente">i</span><span class="bloco__topo"></span><span class="bloco__lado"></span></span><span class="bloco" style="--i:3;--cor:var(--c-tungstenio)"><span class="bloco__frente">a</span><span class="bloco__topo"></span><span class="bloco__lado"></span></span><span class="bloco" style="--i:4;--cor:var(--c-rec)"><span class="bloco__frente">n</span><span class="bloco__topo"></span><span class="bloco__lado"></span></span><span class="bloco" style="--i:5;--cor:var(--c-luz)"><span class="bloco__frente">ç</span><span class="bloco__topo"></span><span class="bloco__lado"></span></span><span class="bloco" style="--i:6;--cor:var(--c-tungstenio)"><span class="bloco__frente">a</span><span class="bloco__topo"></span><span class="bloco__lado"></span></span></span></span>,</span></span> <span class="hero__frase">seu projeto vira <span class="acento">filme</span>!</span></h1>
+        <div class="hero__ctas">
+          <a class="btn btn--primario" data-wa data-origem="hero" href="#contato">
+            <svg class="icone" aria-hidden="true"><use href="#i-whats"/></svg>
+            WhatsApp
+          </a>
+          <a class="btn btn--secundario" href="#showreel">Ver showreel</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. SHOWREEL -->
+    <section class="showreel tema-escuro grao" id="showreel" aria-labelledby="showreel-titulo">
+      <h2 class="sr-only" id="showreel-titulo">Showreel</h2>
+      <p class="t-gigante showreel__palavra" aria-hidden="true">Play</p>
+
+      <!-- Laterais (só desktop): vídeos com fundo transparente, em loop (APNG). Cada lado tem o seu vídeo.
+           O <picture> só baixa o APNG (6 MB cada) no desktop e sem "reduzir movimento"; no celular o <img> fica com um GIF vazio de 1 px. -->
+      <picture>
+        <source media="(min-width: 1024px) and (prefers-reduced-motion: no-preference)" srcset="assets/video/lateral-esquerda.apng">
+        <img class="lateral lateral--esquerda" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="" width="360" height="632" aria-hidden="true" decoding="async">
+      </picture>
+      <picture>
+        <source media="(min-width: 1024px) and (prefers-reduced-motion: no-preference)" srcset="assets/video/lateral-direita.apng">
+        <img class="lateral lateral--direita" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="" width="360" height="632" aria-hidden="true" decoding="async">
+      </picture>
+
+      <div class="container">
+        <div class="quadro" data-showreel>
+          <div class="quadro__midia" data-showreel-midia>
+            <div class="midia-vazia">[PREENCHER: loop mudo do showreel (5–10 s) + poster 1920×1080]</div>
+          </div>
+          <span class="enquadramento" aria-hidden="true"></span>
+          <p class="quadro__status rotulo" aria-hidden="true"><span class="rec"></span>REC <span class="timecode" data-louco>00:00:00:00</span></p>
+          <button class="quadro__play" type="button" data-showreel-play>
+            <span class="quadro__play-icone" aria-hidden="true"><svg class="icone"><use href="#i-play"/></svg></span>
+            <span>Assistir ao showreel<span class="sr-only"> com som</span></span>
+          </button>
+          <button class="btn-icone quadro__pausa" type="button" data-showreel-pausa aria-pressed="false" aria-label="Pausar o vídeo em loop" hidden>
+            <svg class="icone" aria-hidden="true"><use href="#i-pausa"/></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. SOBRE MIM: documento de identificação (vibe verde) -->
+    <section class="secao sobre-mim vibe-verde grao" id="sobre-mim" aria-labelledby="sobre-titulo">
+      <div class="container">
+        <h2 class="sr-only" id="sobre-titulo">Sobre mim</h2>
+
+        <article class="documento" aria-label="Documento de identificação de wee.">
+          <div class="documento__corpo">
+            <figure class="documento__foto">
+              <img src="./assets/img/documento-3x4.jpg" alt="Rhian Augusto, foto de identificação" loading="lazy" decoding="async" width="1080" height="1620">
+              <svg class="moldura" viewBox="0 0 100 133" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+                <rect class="moldura__base" x="4" y="4" width="92" height="125" pathLength="100"/>
+                <rect class="moldura__luz" x="4" y="4" width="92" height="125" pathLength="100"/>
+              </svg>
+            </figure>
+
+            <dl class="documento__campos">
+              <div><dt class="rotulo">Nome</dt><dd>Rhian Augusto</dd></div>
+              <div><dt class="rotulo">Apelido</dt><dd>wee</dd></div>
+              <div><dt class="rotulo">Nascimento</dt><dd>2003</dd></div>
+              <div><dt class="rotulo">Função</dt><dd>Filmmaker</dd></div>
+              <div><dt class="rotulo">Atuação</dt><dd data-contato="cidade">Botucatu e Região</dd></div>
+              <div><dt class="rotulo">Edição</dt><dd>desde 2017</dd></div>
+              <div><dt class="rotulo">Captação e roteiro</dt><dd>há pouco mais de 1 ano</dd></div>
+            </dl>
+          </div>
+
+          <p class="documento__bio">Pode me chamar de wee, mas deixe-me apresentar, me chamo Rhian Augusto, nasci em 2003, sou além de filmmaker dançarino de funk e entusiasta dessa cultura, trabalho com edição de vídeo desde 2017 e com captação e roteiro há um pouco mais de um ano, também adoro <span class="onepiece"><span class="onepiece__chapeu" aria-hidden="true"><svg viewBox="0 0 64 40"><ellipse cx="32" cy="31" rx="31" ry="7" fill="#E9C77F"/><path d="M14 29C14 9 22 4 32 4s18 5 18 25z" fill="#F4D794"/><path d="M14.5 21.5h35v6h-35z" fill="#1B5E3B"/></svg></span><span class="onepiece__o">O</span>ne Piece</span>.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- 4. PROJETOS -->
+    <section class="secao projetos painel painel--grafite tema-escuro grao corte" id="projetos" aria-labelledby="projetos-titulo">
+      <p class="palavra-fundo" aria-hidden="true" data-palavra-projetos>Projetos</p>
+      <div class="container">
+        <header class="secao__cabeca">
+          <h2 class="t-l" id="projetos-titulo">Projetos</h2>
+        </header>
+
+        <div class="galeria galeria--projetos" data-galeria data-projetos tabindex="0" role="region" aria-roledescription="carrossel" aria-label="Projetos em destaque. Use as setas do teclado para trocar de projeto.">
+          <button class="galeria__seta galeria__seta--esq" type="button" data-galeria-anterior aria-label="Projeto anterior">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <ul class="galeria__trilho" role="list" data-galeria-trilho aria-live="polite"></ul>
+          <button class="galeria__seta galeria__seta--dir" type="button" data-galeria-proxima aria-label="Próximo projeto">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <p class="galeria__contador" data-galeria-contador aria-live="off">01 / 08</p>
+        </div>
+        <noscript><p class="t-corpo mudo">Ative o JavaScript para ver a lista de projetos, ou peça os links pelo WhatsApp.</p></noscript>
+
+        <div class="regua" aria-hidden="true">
+          <span class="timecode">00:00:00:00</span>
+          <span class="timecode">00:00:10:00</span>
+          <span class="timecode">00:00:20:00</span>
+          <span class="timecode">00:00:30:00</span>
+          <span class="timecode">00:00:40:00</span>
+          <span class="timecode">00:00:50:00</span>
+          <span class="timecode">00:01:00:00</span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 5. MEU OLHAR: fotografias (vibe verde; ao entrar, o site inteiro muda de vibe) -->
+    <section class="secao meu-olhar vibe-verde grao" id="meu-olhar" data-vibe-global aria-labelledby="olhar-titulo">
+      <p class="palavra-fundo" aria-hidden="true">Meu Olhar</p>
+      <div class="container">
+        <header class="secao__cabeca">
+          <p class="rotulo">Fotografia</p>
+          <h2 class="t-xl" id="olhar-titulo">Meu <span class="acento">Olhar</span></h2>
+        </header>
+
+        <div class="galeria" data-galeria tabindex="0" role="region" aria-roledescription="galeria" aria-label="Galeria de fotografias. Use as setas do teclado para trocar de foto.">
+          <button class="galeria__seta galeria__seta--esq" type="button" data-galeria-anterior aria-label="Foto anterior">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="galeria__trilho" data-galeria-trilho>
+          <figure class="fotograma galeria__item"><img src="./assets/img/meu-olhar/01.jpg" alt="Fotografia 1 de 10" loading="lazy" decoding="async" width="1000" height="1500"></figure>
+          <figure class="fotograma galeria__item"><img src="./assets/img/meu-olhar/02.jpg" alt="Fotografia 2 de 10" loading="lazy" decoding="async" width="1000" height="1620"></figure>
+          <figure class="fotograma galeria__item"><img src="./assets/img/meu-olhar/03.jpg" alt="Fotografia 3 de 10" loading="lazy" decoding="async" width="1000" height="1500"></figure>
+          <figure class="fotograma galeria__item"><img src="./assets/img/meu-olhar/04.jpg" alt="Fotografia 4 de 10" loading="lazy" decoding="async" width="1000" height="1500"></figure>
+          <figure class="fotograma galeria__item"><img src="./assets/img/meu-olhar/05.jpg" alt="Fotografia 5 de 10" loading="lazy" decoding="async" width="1000" height="1500"></figure>
+          <figure class="fotograma galeria__item"><img src="./assets/img/meu-olhar/06.jpg" alt="Fotografia 6 de 10" loading="lazy" decoding="async" width="1000" height="1500"></figure>
+          <figure class="fotograma galeria__item"><img src="./assets/img/meu-olhar/07.jpg" alt="Fotografia 7 de 10" loading="lazy" decoding="async" width="1000" height="1500"></figure>
+          <figure class="fotograma galeria__item"><img src="./assets/img/meu-olhar/08.jpg" alt="Fotografia 8 de 10" loading="lazy" decoding="async" width="1000" height="1778"></figure>
+          <figure class="fotograma galeria__item"><img src="./assets/img/meu-olhar/09.jpg" alt="Fotografia 9 de 10" loading="lazy" decoding="async" width="1000" height="1500"></figure>
+          <figure class="fotograma galeria__item"><img src="./assets/img/meu-olhar/10.jpg" alt="Fotografia 10 de 10" loading="lazy" decoding="async" width="1000" height="1778"></figure>
+          </div>
+          <button class="galeria__seta galeria__seta--dir" type="button" data-galeria-proxima aria-label="Próxima foto">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <p class="galeria__contador" data-galeria-contador aria-live="polite">01 / 10</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 6. CONTATO -->
+    <section class="secao cta-final painel tema-papel grao corte" id="contato" aria-labelledby="contato-titulo">
+      <div class="container cta-final__grade">
+        <p class="rotulo">Contato</p>
+        <h2 class="t-xl" id="contato-titulo">Vamos <span class="acento">trabalhar?</span></h2>
+        <a class="btn btn--primario btn--logo" data-wa data-origem="cta-final" href="#contato" aria-label="Chamar no WhatsApp">
+          <svg class="icone" aria-hidden="true"><use href="#i-whats"/></svg>
+        </a>
+        <dl class="contatos">
+          <div class="contatos__item"><dt class="rotulo">WhatsApp</dt><dd><a class="link" data-contato="whatsapp" href="#contato">[PREENCHER: WhatsApp]</a></dd></div>
+          <div class="contatos__item"><dt><img class="marca marca--gmail" src="./assets/img/marca-gmail.png" alt="E-mail (Gmail)" width="686" height="512"></dt><dd><a class="link" data-contato="email" href="#contato">[PREENCHER: e-mail]</a></dd></div>
+          <div class="contatos__item"><dt><img class="marca marca--instagram" src="./assets/img/marca-instagram.svg" alt="Instagram" width="560" height="400"></dt><dd><a class="link" data-contato="instagram" href="#contato">[PREENCHER: Instagram]</a></dd></div>
+          <div class="contatos__item"><dt class="rotulo">Atuação</dt><dd data-contato="cidade">[PREENCHER: cidade ou região]</dd></div>
+        </dl>
+      </div>
+    </section>
+  </main>
+
+  <!-- 7. RODAPÉ -->
+  <footer class="rodape tema-escuro grao">
+    <div class="container rodape__grade">
+      <a class="logo" href="./" aria-label="wee. — início"><img src="./assets/img/logo-luz.png" alt="" width="2120" height="1337"></a>
+      <nav class="rodape__nav" aria-label="Rodapé">
+        <a class="link" href="#showreel">Showreel</a>
+        <a class="link" href="#sobre-mim">Sobre mim</a>
+        <a class="link" href="#projetos">Projetos</a>
+        <a class="link" href="#meu-olhar">Meu Olhar</a>
+        <a class="link" href="#contato">Contato</a>
+      </nav>
+      <p class="rodape__copy mudo">© <span data-ano></span> wee.</p>
+    </div>
+  </footer>
+
+  <!-- BOTÃO FLUTUANTE -->
+  <a class="flutuante" data-wa data-origem="flutuante" data-flutuante href="#contato" aria-label="WhatsApp">
+    <svg class="icone" aria-hidden="true"><use href="#i-whats"/></svg>
+  </a>
+
+  <!-- CURSOR DE VÍDEO (desktop) -->
+  <div class="cursor" data-cursor aria-hidden="true"><span class="cursor__disco"><span class="cursor__rotulo"></span></span></div>
+
+  <!-- LIGHTBOX DE VÍDEO -->
+  <dialog class="lightbox" data-lightbox aria-labelledby="lightbox-titulo">
+    <div class="lightbox__caixa">
+      <div class="lightbox__topo">
+        <h2 class="t-m" id="lightbox-titulo" data-lightbox-titulo>Vídeo</h2>
+        <button class="btn-icone" type="button" data-lightbox-fechar aria-label="Fechar vídeo">
+          <svg class="icone" aria-hidden="true"><use href="#i-fechar"/></svg>
+        </button>
+      </div>
+      <div class="lightbox__palco" data-lightbox-palco></div>
+      <div class="lightbox__acoes">
+        <a class="btn btn--primario" data-lightbox-cta data-wa data-origem="projeto" href="#contato">
+          <svg class="icone" aria-hidden="true"><use href="#i-whats"/></svg>
+          WhatsApp
+        </a>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="./data/contato.js"></script>
+  <script src="./data/projetos.js"></script>
+  <script type="module" src="./assets/js/main.js"></script>
+</body>
+</html>

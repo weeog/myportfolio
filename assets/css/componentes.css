@@ -1,0 +1,550 @@
+/* =========================================================
+   wee. — componentes reutilizados nas duas páginas
+   (design.md §7, §8 e §9). Sem animações de scroll aqui.
+   ========================================================= */
+
+.icone { width: 1.25em; height: 1.25em; flex: none; }
+
+/* ---------- Logo (imagem oficial) ---------- */
+.logo {
+  display: inline-flex;
+  align-items: baseline;
+  min-height: 44px;
+  text-decoration: none;
+  color: inherit;
+}
+.logo img { display: block; height: 40px; width: auto; }
+
+/* ---------- Indicador REC ---------- */
+.rec {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: var(--s-2);
+  border-radius: 50%;
+  background: var(--c-rec);
+  vertical-align: middle;
+}
+
+/* ---------- Cantos de enquadramento (viewfinder) ---------- */
+.enquadramento {
+  --c: var(--c-luz);
+  --l: 18px;
+  --t: 1.5px;
+  position: absolute;
+  inset: var(--s-3);
+  pointer-events: none;
+  background:
+    linear-gradient(var(--c) 0 0) left top / var(--l) var(--t),
+    linear-gradient(var(--c) 0 0) left top / var(--t) var(--l),
+    linear-gradient(var(--c) 0 0) right top / var(--l) var(--t),
+    linear-gradient(var(--c) 0 0) right top / var(--t) var(--l),
+    linear-gradient(var(--c) 0 0) left bottom / var(--l) var(--t),
+    linear-gradient(var(--c) 0 0) left bottom / var(--t) var(--l),
+    linear-gradient(var(--c) 0 0) right bottom / var(--l) var(--t),
+    linear-gradient(var(--c) 0 0) right bottom / var(--t) var(--l);
+  background-repeat: no-repeat;
+}
+@media (min-width: 768px) {
+  .enquadramento { --l: 24px; inset: var(--s-4); }
+}
+
+/* ---------- Botões ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  min-height: 52px;
+  padding: var(--s-4) 28px;
+  border: 1.5px solid transparent;
+  border-radius: var(--r-pill);
+  font-size: var(--fs-botao);
+  font-weight: 600;
+  line-height: 1;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: 0% 100%;
+  transition:
+    background-size var(--dur-ui) var(--ease-saida),
+    color var(--dur-micro) linear,
+    border-color var(--dur-micro) linear,
+    transform var(--dur-micro) var(--ease-saida);
+}
+.btn:active { transform: scale(.98); }
+
+.btn--primario {
+  background-color: var(--c-rec);
+  background-image: linear-gradient(var(--primario-hover-bg) 0 0);
+  color: var(--c-tinta);
+}
+.btn--secundario {
+  background-color: transparent;
+  background-image: linear-gradient(var(--btn2-cor) 0 0);
+  border-color: var(--btn2-cor);
+  color: var(--btn2-cor);
+}
+.btn--compacto { min-height: 44px; padding: var(--s-3) 20px; font-size: 15px; }
+
+@media (hover: hover) and (pointer: fine) {
+  .btn--primario:hover { background-size: 100% 100%; color: var(--primario-hover-fg); }
+  .btn--secundario:hover { background-size: 100% 100%; color: var(--bg); }
+}
+
+/* WhatsApp ainda sem número em data/contato.js */
+.sem-numero { outline: 1px dashed var(--c-tungstenio); outline-offset: 3px; }
+.tema-papel .sem-numero { outline-color: var(--c-tinta); }
+
+/* ---------- Links ---------- */
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-height: 44px;
+  color: inherit;
+  font-weight: 500;
+  text-decoration: none;
+  background: linear-gradient(var(--link-sublinhado) 0 0) left calc(50% + .7em) / 0% 1.5px no-repeat;
+  transition: background-size var(--dur-ui) var(--ease-saida);
+}
+.link:hover,
+.link:focus-visible { background-size: 100% 1.5px; }
+
+/* ---------- Botão de ícone ---------- */
+.btn-icone {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--r-s);
+  border: 1px solid var(--borda);
+  color: inherit;
+  font-size: 18px;
+  transition: background-color var(--dur-micro) linear, color var(--dur-micro) linear;
+}
+@media (hover: hover) and (pointer: fine) {
+  .btn-icone:hover { background: var(--fg); color: var(--bg); }
+}
+
+/* ---------- Etiqueta de categoria (cards) ---------- */
+.etiqueta {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 8px;
+  border-radius: var(--r-xs);
+  background: rgba(15, 14, 13, .78);
+  color: var(--c-luz);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+/* ---------- Header fixo ---------- */
+.topo {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: var(--z-header);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4);
+  padding: max(var(--s-2), env(safe-area-inset-top)) max(var(--gutter), env(safe-area-inset-right)) var(--s-2) max(var(--gutter), env(safe-area-inset-left));
+  background-color: transparent;
+  transition: background-color var(--dur-ui) linear;
+}
+.topo--solido { background-color: rgba(15, 14, 13, .94); }
+.topo__nav { display: flex; align-items: center; gap: var(--s-3); }
+.topo__cta { display: none; }
+@media (min-width: 768px) {
+  .topo { padding-block: var(--s-3); }
+  .topo__cta { display: inline-flex; }
+}
+
+/* ---------- Menu em tela cheia ---------- */
+.menu {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-menu);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-6);
+  padding: max(var(--s-2), env(safe-area-inset-top)) max(var(--gutter), env(safe-area-inset-right)) max(var(--s-5), env(safe-area-inset-bottom)) max(var(--gutter), env(safe-area-inset-left));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.menu__topo { display: flex; align-items: center; justify-content: space-between; }
+.menu__nav { display: grid; gap: var(--s-2); margin-block: auto; }
+.menu__link {
+  width: fit-content;
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: clamp(48px, 9vw, 112px);
+  line-height: .95;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: inherit;
+  transition: color var(--dur-micro) linear;
+}
+.menu__link:hover,
+.menu__link:focus-visible { color: var(--c-rec); }
+.menu__rodape { display: grid; gap: var(--s-5); }
+.menu__rodape .btn { width: 100%; }
+.menu__contatos { display: grid; gap: var(--s-2); }
+.menu__contatos li { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3); }
+@media (min-width: 768px) {
+  .menu { padding-top: var(--s-3); }
+  .menu__rodape { grid-template-columns: auto 1fr; align-items: center; gap: var(--s-7); }
+  .menu__rodape .btn { width: auto; }
+  .menu__contatos { grid-auto-flow: column; justify-content: end; gap: var(--s-7); }
+}
+.menu-aberto { overflow: hidden; }
+
+/* ---------- Card de projeto ---------- */
+.card { min-width: 0; }
+.card__botao {
+  display: grid;
+  gap: var(--s-3);
+  width: 100%;
+  text-align: left;
+  border-radius: var(--r-card);
+}
+.card__midia {
+  position: relative;
+  display: block;
+  aspect-ratio: 1 / 1; /* todas as miniaturas são 1:1; o vídeo abre no formato real só ao clicar */
+  overflow: hidden;
+  border-radius: var(--r-card);
+  background: var(--bg-superficie);
+}
+.card__midia img,
+.card__midia video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--dur-revelar) var(--ease-saida);
+}
+.card__midia video { opacity: 0; transition: opacity var(--dur-ui) linear; }
+.card__midia::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(15, 14, 13, .8), rgba(15, 14, 13, 0) 55%);
+  pointer-events: none;
+}
+.card__midia .midia-vazia { position: absolute; inset: 0; }
+.card__midia .etiqueta { position: absolute; z-index: 1; top: var(--s-3); left: var(--s-3); }
+.card__duracao { position: absolute; z-index: 1; right: var(--s-3); bottom: var(--s-3); color: var(--c-luz); }
+.card__midia .enquadramento { z-index: 1; opacity: 0; transition: opacity var(--dur-ui) linear; }
+.card__titulo { display: block; }
+.card__titulo.preencher { font-family: var(--f-texto); }
+.card__apoio { display: block; margin-top: calc(var(--s-2) * -1); font-size: 14px; color: var(--fg-mudo); }
+
+@media (hover: hover) and (pointer: fine) {
+  .card__botao:hover .card__midia img { transform: scale(1.03); }
+  .card__botao:hover .card__midia video.tocando { opacity: 1; }
+  .card__botao:hover .enquadramento { opacity: 1; }
+}
+.card__botao:focus-visible .enquadramento { opacity: 1; }
+
+/* ---------- Fotograma (foto de bastidor) ---------- */
+.fotograma {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  padding: 8px 8px 28px;
+  background: var(--c-papel);
+  box-shadow: var(--sombra-foto);
+}
+.fotograma img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ---------- Quadro do showreel ---------- */
+.quadro {
+  position: relative;
+  z-index: 1;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--r-card);
+  background: var(--c-grafite);
+}
+.quadro__midia,
+.quadro__midia img,
+.quadro__midia video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.quadro__status {
+  position: absolute;
+  top: calc(var(--s-3) + 14px);
+  left: calc(var(--s-3) + 14px);
+  display: flex;
+  align-items: center;
+  color: var(--c-luz);
+}
+.quadro__status .timecode { margin-left: var(--s-2); color: var(--c-tungstenio); }
+.quadro__play {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: var(--s-3);
+  width: 100%;
+  color: var(--c-luz);
+  font-weight: 600;
+  font-size: var(--fs-botao);
+  text-shadow: 0 1px 12px rgba(15, 14, 13, .8);
+}
+.quadro__play:focus-visible { outline-offset: -8px; }
+.quadro__play-icone {
+  display: grid;
+  place-items: center;
+  width: clamp(64px, 9vw, 112px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--c-rec);
+  color: var(--c-tinta);
+  font-size: clamp(22px, 3vw, 36px);
+  text-shadow: none;
+  transition: transform var(--dur-ui) var(--ease-saida);
+}
+@media (hover: hover) and (pointer: fine) {
+  .quadro__play:hover .quadro__play-icone { transform: scale(1.08); }
+}
+.quadro__pausa {
+  position: absolute;
+  right: calc(var(--s-3) + 10px);
+  bottom: calc(var(--s-3) + 10px);
+  color: var(--c-luz);
+  border-color: rgba(243, 239, 232, .4);
+  background: rgba(15, 14, 13, .6);
+}
+
+/* ---------- Lightbox de vídeo ---------- */
+.lightbox {
+  width: min(100% - var(--gutter) * 2, 1200px);
+  max-width: none;
+  max-height: calc(100dvh - var(--s-6));
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-m);
+  background: var(--c-grafite);
+  color: var(--c-luz);
+  box-shadow: var(--sombra-foto);
+  overflow: auto;
+}
+.lightbox::backdrop { background: rgba(15, 14, 13, .9); }
+.lightbox--vertical { width: min(100% - var(--gutter) * 2, 480px); }
+.lightbox__caixa { display: grid; gap: var(--s-4); padding: var(--s-4); --borda: var(--c-fumaca); --fg: var(--c-luz); --bg: var(--c-grafite); --primario-hover-bg: var(--c-luz); --primario-hover-fg: var(--c-tinta); --foco: var(--c-tungstenio); }
+.lightbox__topo { display: flex; align-items: center; justify-content: space-between; gap: var(--s-4); }
+.lightbox__palco {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: var(--r-s);
+  background: var(--c-pelicula);
+}
+/* Vertical: largura calculada pela altura da tela, para o palco nunca colapsar */
+.lightbox--vertical .lightbox__palco { width: min(100%, calc(70dvh * 9 / 16)); aspect-ratio: 9 / 16; height: auto; margin-inline: auto; }
+.lightbox__palco iframe,
+.lightbox__palco video { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.lightbox__acoes { display: flex; justify-content: flex-end; }
+@media (max-width: 479px) {
+  .lightbox__acoes .btn { width: 100%; }
+}
+
+/* ---------- Botão flutuante de WhatsApp ---------- */
+.flutuante {
+  position: fixed;
+  right: max(var(--s-4), env(safe-area-inset-right));
+  bottom: max(var(--s-4), env(safe-area-inset-bottom));
+  z-index: var(--z-flutuante);
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--c-rec);
+  color: var(--c-tinta);
+  font-size: 22px;
+  box-shadow: 0 8px 24px rgba(15, 14, 13, .35);
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(.6);
+  transition:
+    opacity var(--dur-ui) linear,
+    transform var(--dur-ui) var(--ease-saida),
+    visibility 0s linear var(--dur-ui);
+}
+.flutuante.visivel {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition-delay: 0s;
+}
+.flutuante:focus-visible { outline-color: var(--c-tungstenio); }
+
+/* =========================================================
+   Estados de animação (usados por animacoes.js e menu.js)
+   ========================================================= */
+
+/* Cortinas de transição entre páginas (transicao.js) */
+.cortina { position: fixed; inset: 0; z-index: 200; pointer-events: none; }
+.cortina > span { position: absolute; left: 0; right: 0; height: 50%; background: var(--c-pelicula); }
+.cortina__topo { top: 0; transform-origin: top; }
+.cortina__base { bottom: 0; transform-origin: bottom; }
+
+/* Intro do obturador (transicao.js): timecode 00:00:00:00 → 00:00:01:12, depois a íris abre */
+.intro-obt {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: var(--s-5);
+  background-color: var(--c-pelicula);
+  background-image: var(--grao);
+  color: var(--c-luz);
+  cursor: pointer;
+}
+.intro-obt .rotulo { display: flex; align-items: center; color: var(--c-luz); }
+.intro-obt__tc {
+  font-size: clamp(44px, 10vw, 128px);
+  font-weight: 500;
+  letter-spacing: .02em;
+  color: var(--c-tungstenio);
+}
+
+/* Timecode que "falha" por um instante (efeitos.js) */
+.tc--falha {
+  color: var(--c-rec);
+  animation: wee-falha 110ms steps(2) 1;
+}
+@keyframes wee-falha {
+  0% { transform: translate(-2px, 0); text-shadow: 2px 0 var(--c-tungstenio), -2px 0 var(--c-luz); }
+  50% { transform: translate(2px, 0); text-shadow: -2px 0 var(--c-tungstenio), 2px 0 var(--c-luz); }
+  100% { transform: none; text-shadow: none; }
+}
+
+/* Cursor de vídeo (efeitos.js), só com mouse */
+.cursor {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 95;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 200ms linear;
+}
+.cursor.ativo { opacity: 1; }
+.cursor__disco {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: grid;
+  place-items: center;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 50%;
+  background: var(--c-luz);
+  transition:
+    width 260ms var(--ease-saida),
+    height 260ms var(--ease-saida),
+    margin 260ms var(--ease-saida),
+    background-color 200ms linear;
+}
+.cursor--grande .cursor__disco {
+  width: 96px;
+  height: 96px;
+  margin: -48px 0 0 -48px;
+  background: var(--c-rec);
+}
+.cursor__rotulo {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  color: var(--c-tinta);
+  opacity: 0;
+  transition: opacity 160ms linear;
+}
+.cursor--grande .cursor__rotulo { opacity: 1; }
+@media (hover: hover) and (pointer: fine) {
+  .card__botao,
+  .card__botao * { cursor: none; }
+}
+@media (hover: none), (pointer: coarse) {
+  .cursor { display: none; }
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+/* Antes do GSAP chegar, o conteúdo do hero fica escondido.
+   Saída de segurança: aparece sozinho em 1,5 s se o JS não chegar. */
+.js-anim:not(.anim) .hero__conteudo {
+  opacity: 0;
+  animation: wee-aparecer 0s linear 1.5s forwards;
+}
+@keyframes wee-aparecer { to { opacity: 1; } }
+
+/* Linhas de título com máscara (criadas e desfeitas pelo JS) */
+.linha {
+  display: block;
+  overflow: hidden;
+  padding-block: .12em;
+  margin-block: -.12em;
+}
+/* Entre duas linhas as margens negativas colapsam (-.12em em vez de -.24em) e o título
+   dividido ficava mais alto que o original: a página pulava no fim da entrada e os gatilhos
+   de rolagem eram medidos fora do lugar. Com -.24em o título dividido tem a altura exata do original. */
+.linha + .linha { margin-top: -.24em; }
+.linha__dentro { display: inline-block; }
+
+/* #4 Corte diagonal: --corte vai de 1 (inclinado) a 0 (reto) com a rolagem */
+.corte { --corte: 0; --corte-alt: 7vw; }
+.anim .corte { clip-path: polygon(0 calc(var(--corte) * var(--corte-alt)), 100% 0, 100% 100%, 0 100%); }
+@media (min-width: 1024px) {
+  .corte { --corte-alt: 10.5vw; }
+}
+
+/* #13 Ponto REC pulsando (o movimento reduzido desliga) */
+@keyframes wee-pulsar {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .3; }
+}
+.rec { animation: wee-pulsar 2s ease-in-out infinite; }
+/* Animações em loop param enquanto a seção está fora da tela (design.md §12.3; efeitos.js) */
+.pausada .bloco,
+.pausada .rec,
+.pausada .moldura__luz,
+.pausada .onepiece__chapeu { animation-play-state: paused; }
+.flutuante::after {
+  content: "";
+  position: absolute;
+  top: 9px;
+  right: 9px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--c-tinta);
+  animation: wee-pulsar 2s ease-in-out infinite;
+}
+
+/* ---------- Rodapé ---------- */
+.rodape { padding-block: var(--s-7) calc(var(--s-7) + 72px); }
+.rodape__grade { display: grid; gap: var(--s-5); }
+.rodape__nav { display: flex; flex-wrap: wrap; gap: 0 var(--s-5); }
+.rodape__copy { font-size: 14px; }
+@media (min-width: 1024px) {
+  .rodape { padding-block: var(--s-7); }
+  .rodape__grade { grid-template-columns: auto 1fr auto; align-items: center; gap: var(--s-7); }
+  .rodape__nav { justify-content: center; }
+}

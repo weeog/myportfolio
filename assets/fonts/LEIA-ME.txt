@@ -1,0 +1,15 @@
+Fontes do site wee.
+
+Este repositório NÃO inclui os arquivos de fonte. As duas fontes enviadas pelo dono são
+versões demo/trial, de uso pessoal, e não podem ser redistribuídas num repositório público.
+
+O site espera estes arquivos nesta pasta (veja assets/css/tokens.css, @font-face):
+  - rodmolle-condensed-demo.otf  (Rodmolle Condensed, display)
+  - rodmolle-condensed-demo.ttf
+  - milesdane-trial.otf          (Milesdane, destaque editorial)
+
+Sem eles, o site funciona com a fonte do sistema no lugar (o visual muda).
+
+Para publicar de verdade: comprar as licenças comerciais + webfont das duas fontes,
+colocar os arquivos aqui (de preferência em woff2) e ajustar o @font-face em tokens.css.
+Pendência registrada em memoria.md ("Bloqueante para publicar").
