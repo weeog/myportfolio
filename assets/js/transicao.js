@@ -48,17 +48,15 @@ export function iniciarIntro() {
   const raiz = document.documentElement;
   raiz.classList.add('intro-ativa');
 
+  // v4: o logo surge, a barra enche e a tela sobe como uma cortina (sem timecode).
   const tela = document.createElement('div');
-  tela.className = 'intro-obt';
-  tela.innerHTML = '<p class="rotulo intro-obt__rotulo"><span class="rec"></span>REC</p>' +
-    '<p class="timecode intro-obt__tc">00:00:00:00</p>';
+  tela.className = 'intro';
+  tela.innerHTML = '<img class="intro__logo" src="./assets/img/logo-luz.png" alt="" width="2120" height="1337">' +
+    '<span class="intro__barra"><span></span></span>';
   document.body.append(tela);
-  const tc = tela.querySelector('.intro-obt__tc');
-
-  // 24 fps: 00:00:01:12 são 36 quadros. Mais curta no celular (≤ 1,2 s).
-  const quadros = 36;
-  const duracao = window.innerWidth < 768 ? 650 : 1000;
-  const inicio = performance.now();
+  const logo = tela.querySelector('.intro__logo');
+  const barra = tela.querySelector('.intro__barra span');
+  const duracao = window.innerWidth < 768 ? 700 : 1000;
   let encerrada = false;
 
   function terminar() {
@@ -69,27 +67,24 @@ export function iniciarIntro() {
     document.dispatchEvent(new CustomEvent('wee:intro-fim'));
   }
 
-  function abrirIris() {
+  function subirCortina() {
     if (encerrada) return;
-    const iris = tela.animate(
-      [{ clipPath: 'circle(150% at 50% 50%)' }, { clipPath: 'circle(0% at 50% 50%)' }],
-      { duration: 760, easing: EASE_SAIDA, fill: 'forwards' }
+    logo.animate([{ transform: 'none', opacity: 1 }, { transform: 'translateY(-40px)', opacity: 0 }],
+      { duration: 400, easing: EASE_CORTE, fill: 'forwards' });
+    const sobe = tela.animate(
+      [{ clipPath: 'inset(0 0 0 0)' }, { clipPath: 'inset(0 0 100% 0)' }],
+      { duration: 800, delay: 120, easing: EASE_CORTE, fill: 'forwards' }
     );
-    iris.onfinish = terminar;
+    sobe.onfinish = terminar;
   }
 
-  function contar(agora) {
-    if (encerrada) return;
-    const p = Math.min(1, (agora - inicio) / duracao);
-    const f = Math.round(p * quadros);
-    tc.textContent = `00:00:${pad(Math.floor(f / 24))}:${pad(f % 24)}`;
-    if (p < 1) requestAnimationFrame(contar);
-    else abrirIris();
-  }
+  logo.animate([{ clipPath: 'inset(100% 0 0 0)', transform: 'translateY(30px)' }, { clipPath: 'inset(0 0 0 0)', transform: 'none' }],
+    { duration: 700, easing: EASE_SAIDA, fill: 'backwards' });
+  barra.animate([{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }],
+    { duration: duracao, easing: EASE_CORTE, fill: 'forwards' }).onfinish = subirCortina;
 
   tela.addEventListener('click', terminar);     // quem não quer esperar pula
-  requestAnimationFrame(contar);
-  setTimeout(terminar, 2200);                    // rede de segurança
+  setTimeout(terminar, 2600);                    // rede de segurança
 }
 
 /* ---------- Transição entre páginas ---------- */

@@ -4,7 +4,7 @@ import { iniciarMenu } from './menu.js';
 import { iniciarLightbox, abrirVideo } from './lightbox.js';
 import { iniciarAnimacoes } from './animacoes.js';
 import { iniciarGaleria } from './galeria.js';
-import { timecodesLoucos, cursorVideo, pausarForaDaTela } from './efeitos.js';
+import { cursorVideo, pausarForaDaTela } from './efeitos.js';
 import { iniciarIntro, iniciarTransicoes } from './transicao.js';
 
 const contato = window.WEE_CONTATO || {};
@@ -81,10 +81,11 @@ function criarCard(p) {
   }
 
   midia.append(el('span', 'etiqueta', CATEGORIAS[p.categoria] || p.categoria));
-  if (p.duracao) midia.append(el('span', 'timecode card__duracao', p.duracao));
-  const cantos = el('span', 'enquadramento');
-  cantos.setAttribute('aria-hidden', 'true');
-  midia.append(cantos);
+  if (p.duracao) midia.append(el('span', 'card__duracao', p.duracao));
+  const play = el('span', 'card__play');
+  play.setAttribute('aria-hidden', 'true');
+  play.innerHTML = '<svg class="icone"><use href="#i-play"/></svg>';
+  midia.append(play);
 
   const titulo = el('span', p.titulo ? 't-m card__titulo' : 'card__titulo preencher', p.titulo || '[PREENCHER: título do projeto]');
   botao.append(midia, titulo);
@@ -198,13 +199,58 @@ function iniciarShowreel() {
   });
 }
 
+/* ---------- Faixa de capas do hero (decorativa, repetida para o laço) ---------- */
+function iniciarFaixa() {
+  const trilho = document.querySelector('[data-faixa-trilho]');
+  if (!trilho) return;
+  const capas = [dados.showreel?.capa, ...(dados.projetos || []).map((p) => p.capa)].filter(Boolean);
+  if (!capas.length) { trilho.closest('[data-faixa]')?.remove(); return; }
+  const itens = () => capas.map((capa) => {
+    const fig = el('span', 'faixa__item');
+    const img = el('img');
+    img.src = caminho(capa);
+    img.alt = '';
+    img.decoding = 'async';
+    fig.append(img);
+    return fig;
+  });
+  // Duas cópias: a animação anda metade do trilho e volta ao início sem emenda.
+  trilho.replaceChildren(...itens(), ...itens(), ...itens(), ...itens());
+}
+
+/* ---------- Pontos de progresso dos carrosséis ---------- */
+function iniciarPontos() {
+  document.querySelectorAll('[data-galeria]').forEach((galeria) => {
+    const caixa = galeria.querySelector('[data-pontos]');
+    const total = galeria.querySelectorAll('.galeria__item').length;
+    if (!caixa || !total) return;
+    caixa.replaceChildren(...Array.from({ length: total }, () => el('span')));
+    const pontos = [...caixa.children];
+    pontos[0].classList.add('ativo');
+    galeria.addEventListener('wee:galeria-troca', (e) => {
+      pontos.forEach((p, i) => p.classList.toggle('ativo', i === e.detail.atual));
+    });
+  });
+}
+
 /* ---------- Header e botão flutuante ---------- */
 function iniciarTopo() {
   const topo = document.querySelector('[data-topo]');
-  if (!topo || topo.classList.contains('topo--solido')) return;
-  const atualizar = () => topo.classList.toggle('topo--solido', window.scrollY > 24);
+  if (!topo) return;
+  let ultimo = window.scrollY;
+  const atualizar = () => {
+    const y = window.scrollY;
+    topo.classList.toggle('topo--solido', y > 24);
+    // Some ao descer e volta ao subir (nunca some no topo da página nem com o menu aberto).
+    const descendo = y > ultimo + 4;
+    const subindo = y < ultimo - 4;
+    if (descendo && y > 400 && !document.documentElement.classList.contains('menu-aberto')) topo.classList.add('topo--escondido');
+    if (subindo || y < 400) topo.classList.remove('topo--escondido');
+    ultimo = y;
+  };
   atualizar();
   window.addEventListener('scroll', atualizar, { passive: true });
+  topo.addEventListener('focusin', () => topo.classList.remove('topo--escondido'));
 }
 
 function iniciarFlutuante() {
@@ -228,11 +274,12 @@ iniciarMenu();
 iniciarLightbox();
 iniciarProjetos();
 iniciarShowreel();
+iniciarFaixa();
 iniciarTopo();
 iniciarFlutuante();
 iniciarTransicoes();
-timecodesLoucos();
 pausarForaDaTela();
 cursorVideo();
+iniciarPontos();         // antes da galeria: ela avisa a primeira troca ao montar
 iniciarGaleria();
 iniciarAnimacoes();

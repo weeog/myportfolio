@@ -49,5 +49,6 @@ Se algum pedido meu contradisser uma decisão registrada em @specs/site.md, @spe
 - `..\backup-site-v1-2026-11-12`: cópia da versão anterior às animações e ao logo (fora do projeto).
 - `data/contato.js` e `data/projetos.js`: único lugar para editar contatos, showreel e projetos.
 - `para-subir/`: onde o dono entrega o conteúdo (capas, infos, fotos). Fica fora do deploy. Guia em `para-subir/LEIA-ME.txt`.
-- Teste local: configuração `wee-site` em `.claude/launch.json` (http://localhost:5500). Os módulos JS não abrem com duplo clique.
+- Teste local: configuração `portfolio-wee` no `.claude/launch.json` da pasta raiz (`node portfolio/.claude/servidor.mjs`, http://localhost:5520). A antiga `wee-site` (PowerShell, 5500) fica no `.claude/launch.json` do projeto. Os módulos JS não abrem com duplo clique.
+- **v4 (2026-11-21):** o visual vem de `assets/css/v4.css` + `transitions-root.css` (+ `tokens.css`). `base.css`, `componentes.css` e `secoes.css` não são carregados. Detalhes em @memoria.md.
 - A pasta `referencias/` fica fora do deploy.

@@ -1,29 +1,22 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR" translate="no">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="google" content="notranslate">
   <title>wee. — Filmes para festas, eventos e motions</title>
   <meta name="description" content="wee. — Com a visão de um diretor e a criatividade de uma criança, seu projeto vira filme! Botucatu e região.">
-  <meta name="theme-color" content="#0F0E0D">
-  <!-- Marca a página para animar, exceto com "reduzir movimento" (design.md §12.3). -->
+  <meta name="theme-color" content="#0B0A09">
+  <!-- Marca a página para animar, exceto com "reduzir movimento". -->
   <script>if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('js-anim');</script>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="icon" href="./assets/img/favicon.svg" type="image/svg+xml">
   <link rel="preload" href="./assets/fonts/rodmolle-condensed-demo.otf" as="font" type="font/otf" crossorigin>
   <link rel="stylesheet" href="./assets/css/tokens.css">
-  <link rel="stylesheet" href="./assets/css/base.css">
-  <link rel="stylesheet" href="./assets/css/componentes.css">
-  <link rel="stylesheet" href="./assets/css/secoes.css">
+  <link rel="stylesheet" href="./assets/css/transitions-root.css">
+  <link rel="stylesheet" href="./assets/css/v4.css">
 </head>
-<body class="tema-escuro">
-
-  <!-- Fundo de degradê desfocado: fica atrás de tudo e se move com a rolagem até "Vamos trabalhar" -->
-  <div class="fundo" aria-hidden="true">
-    <div class="fundo__ref" data-fundo="a"><span class="fundo__luz fundo__luz--a"></span></div>
-    <div class="fundo__ref" data-fundo="b"><span class="fundo__luz fundo__luz--b"></span></div>
-    <div class="fundo__ref" data-fundo="c"><span class="fundo__luz fundo__luz--c"></span></div>
-  </div>
+<body>
 
   <!-- Ícones (traço único) -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -33,27 +26,35 @@
       <symbol id="i-pausa" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></symbol>
       <symbol id="i-fechar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></symbol>
       <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 9h16M4 15h16"/></symbol>
+      <symbol id="i-seta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
     </defs>
   </svg>
 
   <a class="pular" href="#conteudo">Pular para o conteúdo</a>
 
   <!-- HEADER FIXO -->
-  <header class="topo tema-escuro" data-topo>
+  <header class="topo" data-topo>
     <a class="logo" href="./" aria-label="wee. — início"><img src="./assets/img/logo-luz.png" alt="" width="2120" height="1337"></a>
-    <nav class="topo__nav" aria-label="Principal">
-      <a class="btn btn--primario btn--compacto topo__cta" data-wa data-origem="header" href="#contato">
+    <nav class="topo__links" aria-label="Seções">
+      <a class="rola" href="#showreel"><span data-t="Showreel">Showreel</span></a>
+      <a class="rola" href="#sobre-mim"><span data-t="Sobre mim">Sobre mim</span></a>
+      <a class="rola" href="#projetos"><span data-t="Projetos">Projetos</span></a>
+      <a class="rola" href="#meu-olhar"><span data-t="Meu Olhar">Meu Olhar</span></a>
+      <a class="rola" href="#contato"><span data-t="Contato">Contato</span></a>
+    </nav>
+    <div class="topo__acoes">
+      <a class="btn btn--primario btn--compacto" data-wa data-origem="header" href="#contato">
         <svg class="icone" aria-hidden="true"><use href="#i-whats"/></svg>
         WhatsApp
       </a>
-      <button class="btn-icone" type="button" data-menu-abrir aria-expanded="false" aria-controls="menu" aria-label="Abrir menu">
+      <button class="btn-icone topo__menu" type="button" data-menu-abrir aria-expanded="false" aria-controls="menu" aria-label="Abrir menu">
         <svg class="icone" aria-hidden="true"><use href="#i-menu"/></svg>
       </button>
-    </nav>
+    </div>
   </header>
 
   <!-- MENU EM TELA CHEIA -->
-  <div class="menu tema-escuro grao" id="menu" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+  <div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Menu" hidden>
     <div class="menu__topo">
       <a class="logo" href="./" aria-label="wee. — início"><img src="./assets/img/logo-luz.png" alt="" width="2120" height="1337"></a>
       <button class="btn-icone" type="button" data-menu-fechar aria-label="Fechar menu">
@@ -61,11 +62,11 @@
       </button>
     </div>
     <nav class="menu__nav" aria-label="Menu">
-      <a class="menu__link" href="#showreel">Showreel</a>
-      <a class="menu__link" href="#sobre-mim">Sobre mim</a>
-      <a class="menu__link" href="#projetos">Projetos</a>
-      <a class="menu__link" href="#meu-olhar">Meu Olhar</a>
-      <a class="menu__link" href="#contato">Contato</a>
+      <a class="menu__link" href="#showreel"><span class="menu__num">01</span>Showreel</a>
+      <a class="menu__link" href="#sobre-mim"><span class="menu__num">02</span>Sobre mim</a>
+      <a class="menu__link" href="#projetos"><span class="menu__num">03</span>Projetos</a>
+      <a class="menu__link" href="#meu-olhar"><span class="menu__num">04</span>Meu Olhar</a>
+      <a class="menu__link" href="#contato"><span class="menu__num">05</span>Contato</a>
     </nav>
     <div class="menu__rodape">
       <a class="btn btn--primario" data-wa data-origem="menu" href="#contato">
@@ -82,45 +83,54 @@
   <main id="conteudo">
 
     <!-- 1. HERO -->
-    <section class="hero tema-escuro grao" aria-labelledby="hero-titulo">
-      <div class="container hero__conteudo">
-        <h1 class="t-xl hero__titulo" id="hero-titulo"><span class="hero__frase">Com a visão de um <span class="acento">diretor</span></span> <span class="hero__frase">e a criatividade de uma <span class="nao-quebrar"><span class="blocos"><span class="sr-only">criança</span><span class="blocos__letras" aria-hidden="true"><span class="bloco" style="--i:0;--cor:var(--c-rec)"><span class="bloco__frente">c</span><span class="bloco__topo"></span><span class="bloco__lado"></span></span><span class="bloco" style="--i:1;--cor:var(--c-tungstenio)"><span class="bloco__frente">r</span><span class="bloco__topo"></span><span class="bloco__lado"></span></span><span class="bloco" style="--i:2;--cor:var(--c-luz)"><span class="bloco__frente">i</span><span class="bloco__topo"></span><span class="bloco__lado"></span></span><span class="bloco" style="--i:3;--cor:var(--c-tungstenio)"><span class="bloco__frente">a</span><span class="bloco__topo"></span><span class="bloco__lado"></span></span><span class="bloco" style="--i:4;--cor:var(--c-rec)"><span class="bloco__frente">n</span><span class="bloco__topo"></span><span class="bloco__lado"></span></span><span class="bloco" style="--i:5;--cor:var(--c-luz)"><span class="bloco__frente">ç</span><span class="bloco__topo"></span><span class="bloco__lado"></span></span><span class="bloco" style="--i:6;--cor:var(--c-tungstenio)"><span class="bloco__frente">a</span><span class="bloco__topo"></span><span class="bloco__lado"></span></span></span></span>,</span></span> <span class="hero__frase">seu projeto vira <span class="acento">filme</span>!</span></h1>
+    <section class="hero" aria-labelledby="hero-titulo">
+      <div class="hero__luz" aria-hidden="true"></div>
+      <div class="moldura-pagina hero__meta">
+        <p class="rotulo">Filmmaker</p>
+        <p class="rotulo" data-contato="cidade">Botucatu e Região</p>
+      </div>
+
+      <div class="moldura-pagina hero__conteudo">
+        <h1 class="hero__titulo" id="hero-titulo"><span class="hero__frase">Com a visão de um <span class="acento">diretor</span></span> <span class="hero__frase hero__frase--recuo">e a criatividade de uma <span class="nao-quebrar"><span class="blocos"><span class="sr-only">criança</span><span class="blocos__letras" aria-hidden="true"><span class="bloco" style="--i:0;--cor:var(--c-rec)"><span class="bloco__frente">c</span><span class="bloco__topo"></span><span class="bloco__lado"></span></span><span class="bloco" style="--i:1;--cor:var(--c-luz)"><span class="bloco__frente">r</span><span class="bloco__topo"></span><span class="bloco__lado"></span></span><span class="bloco" style="--i:2;--cor:var(--c-tungstenio)"><span class="bloco__frente">i</span><span class="bloco__topo"></span><span class="bloco__lado"></span></span><span class="bloco" style="--i:3;--cor:var(--c-rec)"><span class="bloco__frente">a</span><span class="bloco__topo"></span><span class="bloco__lado"></span></span><span class="bloco" style="--i:4;--cor:var(--c-luz)"><span class="bloco__frente">n</span><span class="bloco__topo"></span><span class="bloco__lado"></span></span><span class="bloco" style="--i:5;--cor:var(--c-tungstenio)"><span class="bloco__frente">ç</span><span class="bloco__topo"></span><span class="bloco__lado"></span></span><span class="bloco" style="--i:6;--cor:var(--c-rec)"><span class="bloco__frente">a</span><span class="bloco__topo"></span><span class="bloco__lado"></span></span></span></span>,</span></span> <span class="hero__frase">seu projeto vira <span class="acento">filme</span>!</span></h1>
         <div class="hero__ctas">
           <a class="btn btn--primario" data-wa data-origem="hero" href="#contato">
             <svg class="icone" aria-hidden="true"><use href="#i-whats"/></svg>
             WhatsApp
           </a>
-          <a class="btn btn--secundario" href="#showreel">Ver showreel</a>
+          <a class="btn btn--secundario" href="#showreel">Ver showreel <svg class="icone" aria-hidden="true"><use href="#i-seta"/></svg></a>
         </div>
+      </div>
+
+      <!-- Faixa lateral de capas: anda sozinha e acelera com a rolagem (decorativa; os projetos estão em Projetos) -->
+      <div class="faixa" aria-hidden="true" data-faixa>
+        <div class="faixa__trilho" data-faixa-trilho></div>
       </div>
     </section>
 
-    <!-- 2. SHOWREEL -->
-    <section class="showreel tema-escuro grao" id="showreel" aria-labelledby="showreel-titulo">
+    <!-- 2. SHOWREEL: SHOW e REEL se abrem para os lados e o quadro cresce -->
+    <section class="showreel" id="showreel" aria-labelledby="showreel-titulo">
       <h2 class="sr-only" id="showreel-titulo">Showreel</h2>
-      <p class="t-gigante showreel__palavra" aria-hidden="true">Play</p>
+      <div class="showreel__palco" data-showreel-palco>
+        <p class="showreel__palavra showreel__palavra--esq" aria-hidden="true">Show</p>
+        <p class="showreel__palavra showreel__palavra--dir" aria-hidden="true">Reel</p>
 
-      <!-- Laterais (só desktop): vídeos com fundo transparente, em loop (APNG). Cada lado tem o seu vídeo.
-           O <picture> só baixa o APNG (6 MB cada) no desktop e sem "reduzir movimento"; no celular o <img> fica com um GIF vazio de 1 px. -->
-      <picture>
-        <source media="(min-width: 1024px) and (prefers-reduced-motion: no-preference)" srcset="assets/video/lateral-esquerda.apng">
-        <img class="lateral lateral--esquerda" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="" width="360" height="632" aria-hidden="true" decoding="async">
-      </picture>
-      <picture>
-        <source media="(min-width: 1024px) and (prefers-reduced-motion: no-preference)" srcset="assets/video/lateral-direita.apng">
-        <img class="lateral lateral--direita" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="" width="360" height="632" aria-hidden="true" decoding="async">
-      </picture>
+        <!-- Laterais (só desktop): vídeos do dono com fundo transparente, em loop (APNG). -->
+        <picture>
+          <source media="(min-width: 1024px) and (prefers-reduced-motion: no-preference)" srcset="assets/video/lateral-esquerda.apng">
+          <img class="lateral lateral--esquerda" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="" width="360" height="632" aria-hidden="true" decoding="async">
+        </picture>
+        <picture>
+          <source media="(min-width: 1024px) and (prefers-reduced-motion: no-preference)" srcset="assets/video/lateral-direita.apng">
+          <img class="lateral lateral--direita" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="" width="360" height="632" aria-hidden="true" decoding="async">
+        </picture>
 
-      <div class="container">
         <div class="quadro" data-showreel>
           <div class="quadro__midia" data-showreel-midia>
-            <div class="midia-vazia">[PREENCHER: loop mudo do showreel (5–10 s) + poster 1920×1080]</div>
+            <div class="midia-vazia">[PREENCHER: loop mudo do showreel (5–10 s) + poster]</div>
           </div>
-          <span class="enquadramento" aria-hidden="true"></span>
-          <p class="quadro__status rotulo" aria-hidden="true"><span class="rec"></span>REC <span class="timecode" data-louco>00:00:00:00</span></p>
           <button class="quadro__play" type="button" data-showreel-play>
             <span class="quadro__play-icone" aria-hidden="true"><svg class="icone"><use href="#i-play"/></svg></span>
-            <span>Assistir ao showreel<span class="sr-only"> com som</span></span>
+            <span class="quadro__play-texto">Assistir ao showreel<span class="sr-only"> com som</span></span>
           </button>
           <button class="btn-icone quadro__pausa" type="button" data-showreel-pausa aria-pressed="false" aria-label="Pausar o vídeo em loop" hidden>
             <svg class="icone" aria-hidden="true"><use href="#i-pausa"/></svg>
@@ -129,43 +139,55 @@
       </div>
     </section>
 
-    <!-- 3. SOBRE MIM: documento de identificação (vibe verde) -->
-    <section class="secao sobre-mim vibe-verde grao" id="sobre-mim" aria-labelledby="sobre-titulo">
-      <div class="container">
-        <h2 class="sr-only" id="sobre-titulo">Sobre mim</h2>
+    <!-- 3. SOBRE MIM: rolagem lateral em três painéis -->
+    <section class="sobre" id="sobre-mim" aria-labelledby="sobre-titulo">
+      <div class="sobre__pin" data-lateral>
+        <div class="sobre__cabeca moldura-pagina">
+          <h2 class="rotulo" id="sobre-titulo">Sobre mim</h2>
+          <div class="progresso" aria-hidden="true"><span class="progresso__barra" data-lateral-progresso></span></div>
+        </div>
 
-        <article class="documento" aria-label="Documento de identificação de wee.">
-          <div class="documento__corpo">
-            <figure class="documento__foto">
+        <div class="sobre__trilho" data-lateral-trilho>
+          <!-- Painel 1: identidade -->
+          <article class="painel painel--id" aria-label="Identificação">
+            <figure class="painel__foto">
               <img src="./assets/img/documento-3x4.jpg" alt="Rhian Augusto, foto de identificação" loading="lazy" decoding="async" width="1080" height="1620">
-              <svg class="moldura" viewBox="0 0 100 133" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-                <rect class="moldura__base" x="4" y="4" width="92" height="125" pathLength="100"/>
-                <rect class="moldura__luz" x="4" y="4" width="92" height="125" pathLength="100"/>
-              </svg>
             </figure>
+            <div class="painel__nome">
+              <p class="rotulo">Nome</p>
+              <p class="nome-grande">Rhian<br>Augusto</p>
+              <p class="apelido"><span class="rotulo">Apelido</span> <span class="acento">wee</span></p>
+            </div>
+          </article>
 
-            <dl class="documento__campos">
-              <div><dt class="rotulo">Nome</dt><dd>Rhian Augusto</dd></div>
-              <div><dt class="rotulo">Apelido</dt><dd>wee</dd></div>
-              <div><dt class="rotulo">Nascimento</dt><dd>2003</dd></div>
-              <div><dt class="rotulo">Função</dt><dd>Filmmaker</dd></div>
-              <div><dt class="rotulo">Atuação</dt><dd data-contato="cidade">Botucatu e Região</dd></div>
-              <div><dt class="rotulo">Edição</dt><dd>desde 2017</dd></div>
-              <div><dt class="rotulo">Captação e roteiro</dt><dd>há pouco mais de 1 ano</dd></div>
+          <!-- Painel 2: ficha -->
+          <article class="painel painel--ficha" aria-label="Ficha">
+            <dl class="ficha">
+              <div class="ficha__linha"><dt class="rotulo">Nascimento</dt><dd>2003</dd></div>
+              <div class="ficha__linha"><dt class="rotulo">Função</dt><dd>Filmmaker</dd></div>
+              <div class="ficha__linha"><dt class="rotulo">Atuação</dt><dd data-contato="cidade">Botucatu e Região</dd></div>
+              <div class="ficha__linha"><dt class="rotulo">Edição</dt><dd>desde 2017</dd></div>
+              <div class="ficha__linha"><dt class="rotulo">Captação e roteiro</dt><dd>há pouco mais de 1 ano</dd></div>
             </dl>
-          </div>
+          </article>
 
-          <p class="documento__bio">Pode me chamar de wee, mas deixe-me apresentar, me chamo Rhian Augusto, nasci em 2003, sou além de filmmaker dançarino de funk e entusiasta dessa cultura, trabalho com edição de vídeo desde 2017 e com captação e roteiro há um pouco mais de um ano, também adoro <span class="onepiece"><span class="onepiece__chapeu" aria-hidden="true"><svg viewBox="0 0 64 40"><ellipse cx="32" cy="31" rx="31" ry="7" fill="#E9C77F"/><path d="M14 29C14 9 22 4 32 4s18 5 18 25z" fill="#F4D794"/><path d="M14.5 21.5h35v6h-35z" fill="#1B5E3B"/></svg></span><span class="onepiece__o">O</span>ne Piece</span>.</p>
-        </article>
+          <!-- Painel 3: bio (texto do dono, sem alteração) -->
+          <article class="painel painel--bio" aria-label="Bio">
+            <p class="bio">Pode me chamar de wee, mas deixe-me apresentar, me chamo Rhian Augusto, nasci em 2003, sou além de filmmaker dançarino de funk e entusiasta dessa cultura, trabalho com edição de vídeo desde 2017 e com captação e roteiro há um pouco mais de um ano, também adoro <span class="onepiece"><span class="onepiece__chapeu" aria-hidden="true"><svg viewBox="0 0 64 40"><ellipse cx="32" cy="31" rx="31" ry="7" fill="#E9C77F"/><path d="M14 29C14 9 22 4 32 4s18 5 18 25z" fill="#F4D794"/><path d="M14.5 21.5h35v6h-35z" fill="#1B5E3B"/></svg></span><span class="onepiece__o">O</span>ne Piece</span>.</p>
+          </article>
+        </div>
+        <p class="sobre__dica rotulo mudo moldura-pagina" aria-hidden="true">Deslize para o lado →</p>
       </div>
     </section>
 
     <!-- 4. PROJETOS -->
-    <section class="secao projetos painel painel--grafite tema-escuro grao corte" id="projetos" aria-labelledby="projetos-titulo">
-      <p class="palavra-fundo" aria-hidden="true" data-palavra-projetos>Projetos</p>
-      <div class="container">
+    <section class="secao projetos" id="projetos" aria-labelledby="projetos-titulo">
+      <div class="letreiro" aria-hidden="true"><p class="letreiro__texto" data-letreiro>Projetos — Projetos — Projetos — Projetos —</p></div>
+      <p class="palavra-fundo" aria-hidden="true" data-palavra-projetos>Festas</p>
+      <div class="moldura-pagina">
         <header class="secao__cabeca">
-          <h2 class="t-l" id="projetos-titulo">Projetos</h2>
+          <h2 class="secao__titulo" id="projetos-titulo">Projetos</h2>
+          <p class="rotulo mudo">Festas · Eventos · Motions</p>
         </header>
 
         <div class="galeria galeria--projetos" data-galeria data-projetos tabindex="0" role="region" aria-roledescription="carrossel" aria-label="Projetos em destaque. Use as setas do teclado para trocar de projeto.">
@@ -176,33 +198,25 @@
           <button class="galeria__seta galeria__seta--dir" type="button" data-galeria-proxima aria-label="Próximo projeto">
             <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
-          <p class="galeria__contador" data-galeria-contador aria-live="off">01 / 08</p>
+          <div class="galeria__rodape">
+            <p class="galeria__contador" data-galeria-contador aria-live="off">01 / 08</p>
+            <div class="pontos" aria-hidden="true" data-pontos></div>
+          </div>
         </div>
-        <noscript><p class="t-corpo mudo">Ative o JavaScript para ver a lista de projetos, ou peça os links pelo WhatsApp.</p></noscript>
-
-        <div class="regua" aria-hidden="true">
-          <span class="timecode">00:00:00:00</span>
-          <span class="timecode">00:00:10:00</span>
-          <span class="timecode">00:00:20:00</span>
-          <span class="timecode">00:00:30:00</span>
-          <span class="timecode">00:00:40:00</span>
-          <span class="timecode">00:00:50:00</span>
-          <span class="timecode">00:01:00:00</span>
-        </div>
-
+        <noscript><p class="mudo">Ative o JavaScript para ver a lista de projetos, ou peça os links pelo WhatsApp.</p></noscript>
       </div>
     </section>
 
-    <!-- 5. MEU OLHAR: fotografias (vibe verde; ao entrar, o site inteiro muda de vibe) -->
-    <section class="secao meu-olhar vibe-verde grao" id="meu-olhar" data-vibe-global aria-labelledby="olhar-titulo">
-      <p class="palavra-fundo" aria-hidden="true">Meu Olhar</p>
-      <div class="container">
+    <!-- 5. MEU OLHAR: fotografias (ao entrar, o site inteiro muda para a vibe verde) -->
+    <section class="secao meu-olhar" id="meu-olhar" data-vibe-global aria-labelledby="olhar-titulo">
+      <div class="letreiro letreiro--inverso" aria-hidden="true"><p class="letreiro__texto" data-letreiro>Meu Olhar — Meu Olhar — Meu Olhar — Meu Olhar —</p></div>
+      <div class="moldura-pagina">
         <header class="secao__cabeca">
-          <p class="rotulo">Fotografia</p>
-          <h2 class="t-xl" id="olhar-titulo">Meu <span class="acento">Olhar</span></h2>
+          <h2 class="secao__titulo" id="olhar-titulo">Meu <span class="acento">Olhar</span></h2>
+          <p class="rotulo mudo">Fotografia</p>
         </header>
 
-        <div class="galeria" data-galeria tabindex="0" role="region" aria-roledescription="galeria" aria-label="Galeria de fotografias. Use as setas do teclado para trocar de foto.">
+        <div class="galeria galeria--fotos" data-galeria tabindex="0" role="region" aria-roledescription="galeria" aria-label="Galeria de fotografias. Use as setas do teclado para trocar de foto.">
           <button class="galeria__seta galeria__seta--esq" type="button" data-galeria-anterior aria-label="Foto anterior">
             <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
@@ -221,20 +235,28 @@
           <button class="galeria__seta galeria__seta--dir" type="button" data-galeria-proxima aria-label="Próxima foto">
             <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
-          <p class="galeria__contador" data-galeria-contador aria-live="polite">01 / 10</p>
+          <div class="galeria__rodape">
+            <p class="galeria__contador" data-galeria-contador aria-live="polite">01 / 10</p>
+            <div class="pontos" aria-hidden="true" data-pontos></div>
+          </div>
         </div>
-
       </div>
     </section>
 
     <!-- 6. CONTATO -->
-    <section class="secao cta-final painel tema-papel grao corte" id="contato" aria-labelledby="contato-titulo">
-      <div class="container cta-final__grade">
-        <p class="rotulo">Contato</p>
-        <h2 class="t-xl" id="contato-titulo">Vamos <span class="acento">trabalhar?</span></h2>
-        <a class="btn btn--primario btn--logo" data-wa data-origem="cta-final" href="#contato" aria-label="Chamar no WhatsApp">
-          <svg class="icone" aria-hidden="true"><use href="#i-whats"/></svg>
-        </a>
+    <section class="contato" id="contato" aria-labelledby="contato-titulo">
+      <div class="contato__letreiro" aria-hidden="true">
+        <p class="contato__frase" data-letreiro-contato>Vamos trabalhar? · Vamos trabalhar? · Vamos trabalhar? ·</p>
+      </div>
+      <div class="moldura-pagina contato__grade">
+        <div class="contato__chamada">
+          <p class="rotulo">Contato</p>
+          <h2 class="contato__titulo" id="contato-titulo">Vamos <span class="acento">trabalhar?</span></h2>
+          <a class="btn btn--primario btn--grande" data-wa data-origem="cta-final" href="#contato">
+            <svg class="icone" aria-hidden="true"><use href="#i-whats"/></svg>
+            Chamar no WhatsApp
+          </a>
+        </div>
         <dl class="contatos">
           <div class="contatos__item"><dt class="rotulo">WhatsApp</dt><dd><a class="link" data-contato="whatsapp" href="#contato">[PREENCHER: WhatsApp]</a></dd></div>
           <div class="contatos__item"><dt><img class="marca marca--gmail" src="./assets/img/marca-gmail.png" alt="E-mail (Gmail)" width="686" height="512"></dt><dd><a class="link" data-contato="email" href="#contato">[PREENCHER: e-mail]</a></dd></div>
@@ -246,15 +268,15 @@
   </main>
 
   <!-- 7. RODAPÉ -->
-  <footer class="rodape tema-escuro grao">
-    <div class="container rodape__grade">
-      <a class="logo" href="./" aria-label="wee. — início"><img src="./assets/img/logo-luz.png" alt="" width="2120" height="1337"></a>
+  <footer class="rodape">
+    <div class="moldura-pagina rodape__grade">
+      <a class="logo logo--grande" href="./" aria-label="wee. — início"><img src="./assets/img/logo-luz.png" alt="" width="2120" height="1337"></a>
       <nav class="rodape__nav" aria-label="Rodapé">
-        <a class="link" href="#showreel">Showreel</a>
-        <a class="link" href="#sobre-mim">Sobre mim</a>
-        <a class="link" href="#projetos">Projetos</a>
-        <a class="link" href="#meu-olhar">Meu Olhar</a>
-        <a class="link" href="#contato">Contato</a>
+        <a class="rola" href="#showreel"><span data-t="Showreel">Showreel</span></a>
+        <a class="rola" href="#sobre-mim"><span data-t="Sobre mim">Sobre mim</span></a>
+        <a class="rola" href="#projetos"><span data-t="Projetos">Projetos</span></a>
+        <a class="rola" href="#meu-olhar"><span data-t="Meu Olhar">Meu Olhar</span></a>
+        <a class="rola" href="#contato"><span data-t="Contato">Contato</span></a>
       </nav>
       <p class="rodape__copy mudo">© <span data-ano></span> wee.</p>
     </div>
@@ -265,14 +287,14 @@
     <svg class="icone" aria-hidden="true"><use href="#i-whats"/></svg>
   </a>
 
-  <!-- CURSOR DE VÍDEO (desktop) -->
+  <!-- CURSOR (desktop) -->
   <div class="cursor" data-cursor aria-hidden="true"><span class="cursor__disco"><span class="cursor__rotulo"></span></span></div>
 
-  <!-- LIGHTBOX DE VÍDEO -->
+  <!-- LIGHTBOX DE VÍDEO (abre e fecha com a transição "modal" do transitions.dev) -->
   <dialog class="lightbox" data-lightbox aria-labelledby="lightbox-titulo">
-    <div class="lightbox__caixa">
+    <div class="lightbox__caixa t-modal" data-lightbox-caixa>
       <div class="lightbox__topo">
-        <h2 class="t-m" id="lightbox-titulo" data-lightbox-titulo>Vídeo</h2>
+        <h2 class="lightbox__titulo" id="lightbox-titulo" data-lightbox-titulo>Vídeo</h2>
         <button class="btn-icone" type="button" data-lightbox-fechar aria-label="Fechar vídeo">
           <svg class="icone" aria-hidden="true"><use href="#i-fechar"/></svg>
         </button>

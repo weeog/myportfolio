@@ -11,6 +11,9 @@
 # Configuração local do Claude Code
 .claude/settings.local.json
 
+# Segredos locais (nunca no Git)
+.env*
+
 # Sistema
 Thumbs.db
 desktop.ini

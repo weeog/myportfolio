@@ -1,5 +1,7 @@
 # specs/design.md — Identidade visual
 
+> **Revisão 2026-11-21 (pedido do dono, v4 "cinema escuro refinado"):** saem o indicador REC/timecode, os cantos de enquadramento (§7), a régua de timecode, o corte diagonal (§12.2 #4) e a intro do obturador (#1). Entram: rolagem lateral (Sobre mim fixado no desktop, deslize no celular), faixa de capas no hero, SHOW/REEL abrindo no showreel, letreiros gigantes laterais, seções abrindo como painel e transições do transitions.dev no lightbox. Paleta, fontes e carrosséis mantidos. Detalhes em `memoria.md`.
+
 > **Revisão 2026-11-12, 2ª (pedido do dono):** em Projetos, a linha do tempo (§12.2 item 5) virou carrossel com setas, igual a Meu Olhar. A palavra gigante de fundo troca para a categoria do card do centro (FESTAS, EVENTO, MOTION). Laterais do showreel: dois vídeos com fundo transparente (APNG), um de cada lado. Detalhes em `memoria.md`.
 
 > **Revisão 2026-11-12 (pedido do dono):** nova "mudança de vibe" verde + off-white, usada em Sobre mim e Meu Olhar. Ao entrar em Meu Olhar, o site inteiro muda de vibe na rolagem e volta ao sair. Palavras de destaque (diretor, filme, Olhar) em Milesdane. Blocos de alfabeto 3D na palavra "criança". Cores e regras em `assets/css/secoes.css` (`.vibe-verde`) e `assets/js/animacoes.js` (`VIBE_VERDE`). Detalhes em `memoria.md`.

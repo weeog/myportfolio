@@ -1,4 +1,4 @@
-// wee. — animações de scroll (design.md §12). Única parte que depende de GSAP e Lenis.
+// wee. — animações de rolagem da v4 (2026-11-21). Única parte que depende de GSAP e Lenis.
 // Se o CDN falhar ou o visitante pedir menos movimento, o site continua inteiro e legível.
 
 const CDN = {
@@ -9,8 +9,8 @@ const CDN = {
 
 const raiz = document.documentElement;
 const menosMovimento = window.matchMedia('(prefers-reduced-motion: reduce)');
-// Depois deste tempo o CSS já mostrou o hero por segurança: não repetir a entrada.
-const LIMITE_ENTRADA_MS = 1500;
+const DESKTOP = '(min-width: 1024px)';
+const CELULAR = '(max-width: 1023px)';
 
 function carregar(src) {
   return new Promise((ok, erro) => {
@@ -23,12 +23,11 @@ function carregar(src) {
   });
 }
 
-/* ---------- Divisão de um título em linhas com máscara ---------- */
+/* ---------- Divide um título em linhas com máscara (devolve as linhas e como desfazer) ---------- */
 function dividirLinhas(titulo) {
   const original = titulo.innerHTML;
   const palavras = [];
-
-  [...titulo.childNodes].forEach((no) => {
+  const juntar = (no) => {
     if (no.nodeType === Node.TEXT_NODE) {
       no.textContent.split(/\s+/).filter(Boolean).forEach((p) => {
         const span = document.createElement('span');
@@ -37,17 +36,19 @@ function dividirLinhas(titulo) {
         palavras.push(span);
       });
     } else if (no.nodeType === Node.ELEMENT_NODE) {
+      // Elementos (frases do hero, acento, blocos) ficam inteiros: no desktop cada frase é uma linha.
       const span = document.createElement('span');
       span.className = 'palavra';
       span.append(no.cloneNode(true));
       palavras.push(span);
     }
-  });
+  };
+  [...titulo.childNodes].forEach(juntar);
 
   titulo.replaceChildren();
   palavras.forEach((p, i) => { if (i) titulo.append(' '); titulo.append(p); });
 
-  // Agrupa as palavras pela linha em que caíram.
+  // No desktop, o hero quebra por frase: mede onde cada palavra caiu com as frases montadas.
   const grupos = [];
   let topoAtual = null;
   palavras.forEach((p) => {
@@ -60,25 +61,26 @@ function dividirLinhas(titulo) {
   const linhas = grupos.map((grupo) => {
     const linha = document.createElement('span');
     linha.className = 'linha';
+    linha.style.cssText = 'display:block;overflow:clip;overflow-clip-margin:.12em;padding-block:.04em;';
     const dentro = document.createElement('span');
     dentro.className = 'linha__dentro';
+    dentro.style.display = 'block';
     grupo.forEach((p, i) => { if (i) dentro.append(' '); dentro.append(...p.childNodes); });
     linha.append(dentro);
     titulo.append(linha);
     return dentro;
   });
-
   return { linhas, reverter: () => { titulo.innerHTML = original; } };
 }
 
 /* ---------- Rolagem suave ---------- */
 function iniciarLenis(gsap, ScrollTrigger) {
-  const lenis = new window.Lenis({ lerp: 0.1 });
+  const lenis = new window.Lenis({ lerp: 0.09 });
   lenis.on('scroll', ScrollTrigger.update);
   gsap.ticker.add((tempo) => lenis.raf(tempo * 1000));
   gsap.ticker.lagSmoothing(0);
 
-  // Links internos (#secao) rolam pelo Lenis, descontando o header fixo.
+  // Links internos rolam pelo Lenis. Para seções fixadas, vai ao início do pin.
   document.addEventListener('click', (e) => {
     const link = e.target.closest('a[href^="#"]');
     if (!link) return;
@@ -87,224 +89,242 @@ function iniciarLenis(gsap, ScrollTrigger) {
     const alvo = document.querySelector(id);
     if (!alvo) return;
     e.preventDefault();
-    lenis.scrollTo(alvo, { offset: -72 });
+    lenis.scrollTo(alvo, { offset: 0, duration: 1.4 });
     history.replaceState(null, '', id);
   });
 
-  // Menu e lightbox travam a rolagem da página.
   document.addEventListener('wee:trava', (e) => { if (e.detail) lenis.stop(); else lenis.start(); });
   return lenis;
 }
 
-/* ---------- #2 Título do hero ---------- */
+/* ---------- Hero: entrada (linhas sobem, "criança" cai em blocos, faixa desliza) ---------- */
 function entradaHero(gsap) {
   const titulo = document.querySelector('.hero__titulo');
   if (!titulo) return;
-  const resto = [...titulo.parentElement.children].filter((no) => no !== titulo);
-
-  // Com a intro do obturador ativa, a entrada espera ela terminar (sem limite de tempo).
-  const esperaIntro = document.documentElement.classList.contains('intro-ativa');
-  if (!esperaIntro && performance.now() > LIMITE_ENTRADA_MS) return; // já está visível
 
   const comecar = () => {
     const { linhas, reverter } = dividirLinhas(titulo);
-    const acento = titulo.querySelector('.acento');
+    raiz.classList.add('hero-pronto');
     const tl = gsap.timeline({ defaults: { ease: 'expo.out' }, onComplete: reverter });
-    tl.from(linhas, { yPercent: 115, duration: 0.9, stagger: 0.08 });
-    if (acento) {
-      tl.from(acento, { rotate: 7, yPercent: 40, transformOrigin: '0% 100%', duration: 0.9 }, '<0.25');
-    }
-    tl.from(resto, { y: 24, autoAlpha: 0, duration: 0.7, stagger: 0.07, clearProps: 'all' }, '-=0.6');
+    tl.from('.hero__meta > *', { y: 16, autoAlpha: 0, duration: .8, stagger: .08 })
+      .from(linhas, { yPercent: 115, rotate: 3, transformOrigin: '0% 100%', duration: 1.1, stagger: .09 }, '<.05')
+      .from(titulo.querySelectorAll('.acento'), { yPercent: 40, rotate: 8, duration: 1.1 }, '<.3')
+      .from(titulo.querySelectorAll('.bloco'), { y: '-2.2em', rotateZ: () => gsap.utils.random(-30, 30), duration: 1.2, ease: 'bounce.out', stagger: .06 }, '<.1')
+      .from('.hero__ctas > *', { y: 24, autoAlpha: 0, duration: .8, stagger: .08, clearProps: 'all' }, '-=1')
+      .from('.faixa', { xPercent: 18, autoAlpha: 0, duration: 1.4 }, '<');
   };
-  if (esperaIntro) document.addEventListener('wee:intro-fim', comecar, { once: true });
+  if (raiz.classList.contains('intro-ativa')) document.addEventListener('wee:intro-fim', comecar, { once: true });
   else comecar();
 }
 
-/* ---------- Títulos de seção: linhas sobem ao entrar na tela ---------- */
-function entradaTitulos(gsap) {
-  // Títulos grandes: divididos em linhas já na carga, escondidos, e revelados ao entrar.
-  document.querySelectorAll('.secao__cabeca .t-l, .cta-final .t-xl').forEach((titulo) => {
-    if (titulo.getBoundingClientRect().top < window.innerHeight * 0.85) return; // já está na tela
+/* ---------- Hero: o título recua e a faixa acelera conforme a rolagem ---------- */
+function heroRolagem(gsap, ScrollTrigger) {
+  const hero = document.querySelector('.hero');
+  const trilho = document.querySelector('[data-faixa-trilho]');
+  if (!hero) return;
+
+  gsap.to('.hero__conteudo', {
+    yPercent: -18, autoAlpha: .15, ease: 'none',
+    scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: .6 }
+  });
+
+  if (!trilho) return;
+  // Laço infinito: o trilho tem 4 cópias; andar -50% cai exatamente na cópia 3 (igual à 1).
+  const laco = gsap.to(trilho, { xPercent: -50, ease: 'none', duration: 60, repeat: -1 });
+  const inclina = gsap.quickTo(trilho, 'skewX', { duration: .5, ease: 'power3' });
+  let volta = null;
+  ScrollTrigger.create({
+    trigger: hero,
+    start: 'top top',
+    end: 'bottom top',
+    onUpdate: (st) => {
+      const v = st.getVelocity();
+      laco.timeScale(1 + Math.min(Math.abs(v) / 120, 14) * (v < 0 ? -1 : 1));
+      inclina(gsap.utils.clamp(-8, 8, v / -300));
+      clearTimeout(volta);
+      volta = setTimeout(() => { gsap.to(laco, { timeScale: 1, duration: .8 }); inclina(0); }, 120);
+    }
+  });
+}
+
+/* ---------- Showreel: SHOW e REEL se abrem para os lados e o quadro cresce ---------- */
+function showreel(gsap, mm) {
+  const palco = document.querySelector('[data-showreel-palco]');
+  if (!palco) return;
+  const esq = palco.querySelector('.showreel__palavra--esq');
+  const dir = palco.querySelector('.showreel__palavra--dir');
+  const quadro = palco.querySelector('.quadro');
+  const laterais = palco.querySelectorAll('.lateral');
+
+  mm.add(DESKTOP, () => {
+    const tl = gsap.timeline({
+      defaults: { ease: 'power2.inOut' },
+      scrollTrigger: { trigger: palco, start: 'top top', end: '+=140%', pin: true, scrub: .8, invalidateOnRefresh: true }
+    });
+    tl.fromTo(quadro, { scale: .5, rotate: -7, yPercent: 8 }, { scale: 1, rotate: 0, yPercent: 0, duration: 1 }, 0)
+      .fromTo(esq, { xPercent: 4 }, { xPercent: -80, duration: 1 }, 0)
+      .fromTo(dir, { xPercent: -4 }, { xPercent: 80, duration: 1 }, 0)
+      .fromTo(laterais, { autoAlpha: 0, y: 80 }, { autoAlpha: 1, y: 0, duration: .5, stagger: .1 }, .45)
+      .to({}, { duration: .25 });
+    return () => gsap.set([quadro, esq, dir, laterais], { clearProps: 'all' });
+  });
+
+  mm.add(CELULAR, () => {
+    const st = { trigger: palco, start: 'top bottom', end: 'center center', scrub: .6 };
+    gsap.fromTo(quadro, { scale: .78, rotate: -5 }, { scale: 1, rotate: 0, ease: 'none', scrollTrigger: st });
+    gsap.fromTo(esq, { xPercent: 4 }, { xPercent: -30, ease: 'none', scrollTrigger: { ...st, end: 'bottom top' } });
+    gsap.fromTo(dir, { xPercent: -4 }, { xPercent: 30, ease: 'none', scrollTrigger: { ...st, end: 'bottom top' } });
+    return () => gsap.set([quadro, esq, dir], { clearProps: 'all' });
+  });
+}
+
+/* ---------- Sobre mim: rolagem lateral (desktop) e revelação simples (celular) ---------- */
+function sobreLateral(gsap, mm) {
+  const pin = document.querySelector('[data-lateral]');
+  const trilho = pin?.querySelector('[data-lateral-trilho]');
+  const barra = pin?.querySelector('[data-lateral-progresso]');
+  if (!pin || !trilho) return;
+
+  mm.add(DESKTOP, () => {
+    const distancia = () => Math.max(0, trilho.scrollWidth - window.innerWidth);
+    const anda = gsap.to(trilho, {
+      x: () => -distancia(),
+      ease: 'none',
+      scrollTrigger: {
+        trigger: pin,
+        start: 'top top',
+        end: () => `+=${distancia()}`,
+        pin: true,
+        scrub: .8,
+        invalidateOnRefresh: true,
+        onUpdate: (st) => gsap.set(barra, { scaleX: st.progress })
+      }
+    });
+
+    // Dentro da rolagem lateral: cada painel tem seu próprio movimento.
+    const foto = pin.querySelector('.painel__foto img');
+    gsap.fromTo(foto, { scale: 1.25, xPercent: -6 }, { scale: 1, xPercent: 6, ease: 'none',
+      scrollTrigger: { trigger: '.painel--id', containerAnimation: anda, start: 'left right', end: 'right left', scrub: true } });
+    gsap.from('.nome-grande', { xPercent: 20, ease: 'none',
+      scrollTrigger: { trigger: '.painel--id', containerAnimation: anda, start: 'left right', end: 'right center', scrub: true } });
+    pin.querySelectorAll('.ficha__linha').forEach((linha, i) => {
+      gsap.from(linha, { x: 160 + i * 60, autoAlpha: 0, ease: 'none',
+        scrollTrigger: { trigger: linha, containerAnimation: anda, start: 'left 105%', end: 'left 70%', scrub: true } });
+    });
+    gsap.from('.bio', { x: 220, autoAlpha: 0, ease: 'none',
+      scrollTrigger: { trigger: '.painel--bio', containerAnimation: anda, start: 'left right', end: 'left 45%', scrub: true } });
+
+    return () => gsap.set([trilho, barra, foto, '.nome-grande', '.ficha__linha', '.bio'], { clearProps: 'all' });
+  });
+
+  mm.add(CELULAR, () => {
+    // Deslize nativo (scroll-snap): os painéis entram de lado na primeira vez e a barra segue o dedo.
+    gsap.from(pin.querySelectorAll('.painel'), { x: 120, autoAlpha: 0, duration: 1.1, stagger: .1, ease: 'expo.out',
+      scrollTrigger: { trigger: trilho, start: 'top 80%', once: true } });
+    const medir = () => {
+      const max = trilho.scrollWidth - trilho.clientWidth;
+      gsap.set(barra, { scaleX: max > 0 ? Math.max(.08, trilho.scrollLeft / max) : 1 });
+    };
+    medir();
+    trilho.addEventListener('scroll', medir, { passive: true });
+    return () => trilho.removeEventListener('scroll', medir);
+  });
+}
+
+/* ---------- Letreiros: texto gigante que anda de lado com a rolagem ---------- */
+function letreiros(gsap) {
+  document.querySelectorAll('[data-letreiro]').forEach((texto) => {
+    const inverso = texto.closest('.letreiro--inverso');
+    gsap.fromTo(texto, { xPercent: inverso ? -35 : 0 }, {
+      xPercent: inverso ? 0 : -35, ease: 'none',
+      scrollTrigger: { trigger: texto.parentElement, start: 'top bottom', end: 'bottom top', scrub: .5 }
+    });
+  });
+  const contato = document.querySelector('[data-letreiro-contato]');
+  if (contato) {
+    gsap.fromTo(contato, { xPercent: 0 }, { xPercent: -45, ease: 'none',
+      scrollTrigger: { trigger: '.contato', start: 'top bottom', end: 'bottom bottom', scrub: .5 } });
+  }
+}
+
+/* ---------- Seções: painel que abre (clip-path) e títulos por linha ---------- */
+function entradaSecoes(gsap) {
+  gsap.utils.toArray('.projetos, .contato').forEach((secao) => {
+    gsap.fromTo(secao,
+      { clipPath: 'inset(8% 5% 0% 5% round 40px)' },
+      { clipPath: 'inset(0% 0% 0% 0% round 28px)', ease: 'none',
+        scrollTrigger: { trigger: secao, start: 'top bottom', end: 'top 25%', scrub: .6 } });
+  });
+
+  document.querySelectorAll('.secao__titulo, .contato__titulo').forEach((titulo) => {
     const { linhas, reverter } = dividirLinhas(titulo);
     gsap.from(linhas, {
-      yPercent: 115,
-      duration: 0.9,
-      stagger: 0.08,
-      ease: 'expo.out',
-      onComplete: reverter,
+      yPercent: 115, rotate: 3, transformOrigin: '0% 100%', duration: 1, stagger: .08, ease: 'expo.out', onComplete: reverter,
       scrollTrigger: { trigger: titulo, start: 'top 88%', once: true }
     });
   });
 
-  // Blocos de apoio (rótulos e contatos): sobem e aparecem.
-  document.querySelectorAll('.secao__cabeca .rotulo, .contatos').forEach((bloco) => {
-    if (bloco.getBoundingClientRect().top < window.innerHeight * 0.85) return;
-    gsap.from(bloco, {
-      y: 32,
-      autoAlpha: 0,
-      duration: 0.8,
-      ease: 'expo.out',
-      clearProps: 'transform,opacity,visibility',
-      scrollTrigger: { trigger: bloco, start: 'top 90%', once: true }
+  gsap.utils.toArray('.galeria').forEach((galeria) => {
+    gsap.from(galeria.querySelector('.galeria__trilho'), {
+      y: 90, rotateX: 12, autoAlpha: 0, transformPerspective: 1200, duration: 1.3, ease: 'expo.out',
+      scrollTrigger: { trigger: galeria, start: 'top 82%', once: true }
     });
   });
+
+  gsap.from('.contatos__item', {
+    y: 30, autoAlpha: 0, duration: .9, stagger: .08, ease: 'expo.out',
+    scrollTrigger: { trigger: '.contatos', start: 'top 85%', once: true }
+  });
+
+  // Palavra de categoria atrás do carrossel: cresce devagar enquanto a seção passa.
+  const palavra = document.querySelector('.palavra-fundo');
+  if (palavra) {
+    gsap.fromTo(palavra, { scale: .85 }, { scale: 1.25, ease: 'none',
+      scrollTrigger: { trigger: palavra.parentElement, start: 'top bottom', end: 'bottom top', scrub: .6 } });
+  }
 }
 
 /* ---------- Botões magnéticos (desktop) ---------- */
 function magneticos(gsap) {
   if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
-  document.querySelectorAll('main .btn--primario, .quadro__play-icone').forEach((botao) => {
-    const x = gsap.quickTo(botao, 'x', { duration: 0.4, ease: 'power3' });
-    const y = gsap.quickTo(botao, 'y', { duration: 0.4, ease: 'power3' });
+  document.querySelectorAll('main .btn--primario, .quadro__play-icone, .galeria__seta').forEach((botao) => {
+    const x = gsap.quickTo(botao, 'x', { duration: .5, ease: 'power3' });
+    const y = gsap.quickTo(botao, 'y', { duration: .5, ease: 'power3' });
     const alvo = botao.closest('.quadro__play') || botao;
     alvo.addEventListener('pointermove', (e) => {
       const r = botao.getBoundingClientRect();
-      x((e.clientX - r.left - r.width / 2) * 0.22);
-      y((e.clientY - r.top - r.height / 2) * 0.3);
+      x((e.clientX - r.left - r.width / 2) * .25);
+      y((e.clientY - r.top - r.height / 2) * .3);
     });
     alvo.addEventListener('pointerleave', () => { x(0); y(0); });
   });
 }
 
-/* ---------- #4 Corte diagonal ---------- */
-function cortes(gsap) {
-  document.querySelectorAll('.corte').forEach((secao) => {
-    gsap.fromTo(secao, { '--corte': 1 }, {
-      '--corte': 0,
-      ease: 'none',
-      scrollTrigger: { trigger: secao, start: 'top bottom', end: 'top 30%', scrub: 0.6 }
-    });
-  });
-}
-
-/* ---------- #3 Palavra "PLAY" que cresce com a rolagem, atrás de tudo ---------- */
-/* O quadro do vídeo fica normal. A palavra gigante (atrás do conteúdo) é que cresce. */
-function palavraQueCresce(gsap, mm) {
-  const secao = document.querySelector('.showreel');
-  const palavra = secao?.querySelector('.showreel__palavra');
-  if (!palavra) return;
-
-  // Desktop: a seção fica fixa enquanto a palavra cresce e sai de trás da tela.
-  mm.add('(min-width: 1024px)', () => {
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: secao,
-        start: 'top top',
-        end: '+=90%',
-        pin: true,
-        scrub: 0.6,
-        invalidateOnRefresh: true
-      }
-    });
-    tl.to(palavra, { scale: 3.4, ease: 'power2.inOut' })
-      .to({}, { duration: 0.2 }); // segura um instante no tamanho máximo
-    return () => gsap.set(palavra, { clearProps: 'all' });
-  });
-
-  // Celular e tablet: sem pin, a palavra cresce junto com a rolagem.
-  mm.add('(max-width: 1023px)', () => {
-    gsap.fromTo(palavra, { scale: 1 }, {
-      scale: 1.9,
-      ease: 'none',
-      scrollTrigger: { trigger: secao, start: 'top bottom', end: 'bottom top', scrub: 0.6 }
-    });
-    return () => gsap.set(palavra, { clearProps: 'all' });
-  });
-}
-
-/* ---------- Palavras gigantes de Projetos e Meu Olhar: crescem com a rolagem, atrás de tudo ---------- */
-function palavrasFundoCrescem(gsap) {
-  // Sem pin (as seções são longas): a palavra cresce conforme a seção passa pela tela.
-  document.querySelectorAll('.palavra-fundo').forEach((palavra) => {
-    gsap.fromTo(palavra, { scale: 1 }, {
-      scale: 2.1,
-      ease: 'none',
-      scrollTrigger: { trigger: palavra.parentElement, start: 'top bottom', end: 'bottom top', scrub: 0.6 }
-    });
-  });
-}
-
-/* ---------- Fotogramas caindo e empilhando (design.md §12.2 #7) ---------- */
-function fotogramasCaindo(gsap) {
-  // A galeria de Meu Olhar entra descendo de leve (as fotos são trocadas por setas, não empilhadas).
-  const grupo = document.querySelector('.meu-olhar [data-galeria]');
-  if (!grupo) return;
-  gsap.fromTo(grupo,
-    { y: -60, autoAlpha: 0 },
-    {
-      y: 0, autoAlpha: 1, duration: 1, ease: 'expo.out',
-      scrollTrigger: { trigger: grupo, start: 'top 85%', once: true }
-    });
-}
-
-/* ---------- Moldura da foto 3×4: ganha a classe "on" ao entrar na tela (anima só uma vez) ---------- */
-function molduraEntrada(ScrollTrigger) {
-  const moldura = document.querySelector('.documento__foto');
-  if (!moldura) return;
-  ScrollTrigger.create({
-    trigger: moldura,
-    start: 'top 85%',
-    once: true,
-    onEnter: () => moldura.classList.add('on')
-  });
-}
-
 /* ---------- Mudança de vibe ----------
-   Valores da vibe verde. Devem bater com .vibe-verde em secoes.css.
-   Para outra seção, copie o bloco, troque as cores e marque a seção com data-vibe-global. */
+   Ao entrar em Meu Olhar, o site inteiro muda para a vibe verde; ao sair, volta. Preso à rolagem. */
 const VIBE_VERDE = {
-  '--c-pelicula': '#0F3B26',
-  '--c-grafite': '#15492F',
-  '--c-fumaca': '#2D6B4B',
-  '--c-luz': '#F0ECE0',
-  '--c-mudo-escuro': '#B8D2C0',
+  '--c-pelicula': '#0C2A1C',
+  '--c-grafite': '#123826',
+  '--c-fumaca': '#245A3F',
+  '--c-luz': '#EEF0E4',
+  '--c-mudo-escuro': '#A9C4B2',
   '--c-rec': '#8FE39C',
   '--c-tungstenio': '#C9F2A8'
 };
 
-/** Ao entrar na seção marcada, o site inteiro muda para a vibe; ao sair, volta. Fluido, preso à rolagem. */
 function mudancaDeVibe(gsap) {
   const secao = document.querySelector('[data-vibe-global]');
   if (!secao) return;
   const estilo = getComputedStyle(raiz);
   const original = {};
   Object.keys(VIBE_VERDE).forEach((v) => { original[v] = estilo.getPropertyValue(v).trim(); });
-
   const tl = gsap.timeline({
     defaults: { ease: 'none' },
-    scrollTrigger: { trigger: secao, start: 'top 80%', end: 'bottom 20%', scrub: 0.6 }
+    scrollTrigger: { trigger: secao, start: 'top 75%', end: 'bottom 25%', scrub: .6 }
   });
-  // Entra na vibe em ~25% da seção, mantém o verde cheio por ~50% e volta nos últimos ~25%.
-  tl.to(raiz, { ...VIBE_VERDE, duration: 0.25 })
-    .to({}, { duration: 0.55 })
-    .to(raiz, { ...original, duration: 0.25 });
-}
-
-/* ---------- Fundo degradê: as luzes se deslocam com a rolagem até "Vamos trabalhar" ---------- */
-function fundoRolagem(gsap) {
-  const fim = document.getElementById('contato');
-  const a = document.querySelector('[data-fundo="a"]');
-  const b = document.querySelector('[data-fundo="b"]');
-  const c = document.querySelector('[data-fundo="c"]');
-  if (!fim || !a || !b || !c) return;
-  const tl = gsap.timeline({
-    defaults: { ease: 'none' },
-    scrollTrigger: { trigger: document.body, start: 'top top', endTrigger: fim, end: 'top bottom', scrub: 1 }
-  });
-  tl.to(a, { x: '34vw', y: '70vh', scale: 1.25 }, 0)
-    .to(b, { x: '-42vw', y: '-40vh', scale: 0.85 }, 0)
-    .to(c, { x: '26vw', y: '-30vh', scale: 1.15 }, 0)
-    .to('.fundo', { opacity: 0 }, 0.82); // some quando entra o contato (papel)
-}
-
-/* ---------- Régua de timecode que anda com a rolagem (design.md §12.2 #5) ---------- */
-function reguaRolagem(gsap) {
-  const marcas = document.querySelectorAll('.regua .timecode');
-  if (!marcas.length) return;
-  gsap.fromTo(marcas, { x: 140 }, {
-    x: -200, ease: 'none',
-    scrollTrigger: { trigger: '#projetos', start: 'top bottom', end: 'bottom top', scrub: 0.6 }
-  });
+  tl.to(raiz, { ...VIBE_VERDE, duration: .2 })
+    .to({}, { duration: .6 })
+    .to(raiz, { ...original, duration: .2 });
 }
 
 export async function iniciarAnimacoes() {
@@ -315,7 +335,7 @@ export async function iniciarAnimacoes() {
     await Promise.all([carregar(CDN.scrollTrigger), carregar(CDN.lenis)]);
   } catch (erro) {
     console.warn('[wee.] Animações desligadas:', erro.message);
-    raiz.classList.add('anim'); // libera o que o CSS escondeu
+    raiz.classList.add('hero-pronto');
     return;
   }
 
@@ -323,21 +343,18 @@ export async function iniciarAnimacoes() {
   gsap.registerPlugin(ScrollTrigger);
   await document.fonts.ready; // as linhas dos títulos dependem da fonte final
 
-  raiz.classList.add('anim');
+  raiz.classList.add('anim'); // liga os layouts que dependem do JS (rolagem lateral do Sobre)
   iniciarLenis(gsap, ScrollTrigger);
 
   const mm = gsap.matchMedia();
   entradaHero(gsap);
-  palavraQueCresce(gsap, mm);
-  palavrasFundoCrescem(gsap);
-  cortes(gsap);
-  entradaTitulos(gsap);
+  heroRolagem(gsap, ScrollTrigger);
+  showreel(gsap, mm);
+  sobreLateral(gsap, mm);
+  letreiros(gsap);
+  entradaSecoes(gsap);
   magneticos(gsap);
-  fotogramasCaindo(gsap);
-  molduraEntrada(ScrollTrigger);
-  reguaRolagem(gsap);
   mudancaDeVibe(gsap);
-  fundoRolagem(gsap);
 
   window.addEventListener('load', () => ScrollTrigger.refresh());
 }

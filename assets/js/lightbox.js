@@ -1,6 +1,7 @@
 // wee. — lightbox de vídeo. O iframe só é criado no clique (fachada).
 
-let dialog, palco, tituloEl, cta, ultimoFoco;
+let dialog, palco, tituloEl, cta, caixa, ultimoFoco;
+let fechando = false;
 
 /** Converte um link do YouTube ou Vimeo no endereço de incorporação. */
 function enderecoEmbed(link) {
@@ -66,7 +67,25 @@ export function abrirVideo({ titulo, link, formato }) {
   }
 
   dialog.showModal();
+  // transitions.dev "modal": a caixa sobe de --modal-scale até 1.
+  caixa?.classList.remove('is-closing');
+  requestAnimationFrame(() => caixa?.classList.add('is-open'));
   document.dispatchEvent(new CustomEvent('wee:trava', { detail: true }));
+}
+
+/** Fecha com a saída do transitions.dev ("is-closing" por --modal-close-dur) e só então fecha o <dialog>. */
+function fecharVideo() {
+  if (!dialog.open || fechando) return;
+  if (!caixa) { dialog.close(); return; }
+  fechando = true;
+  const ms = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--modal-close-dur')) || 150;
+  caixa.classList.remove('is-open');
+  caixa.classList.add('is-closing');
+  setTimeout(() => {
+    caixa.classList.remove('is-closing');
+    fechando = false;
+    dialog.close();
+  }, ms);
 }
 
 export function iniciarLightbox() {
@@ -75,16 +94,20 @@ export function iniciarLightbox() {
   palco = dialog.querySelector('[data-lightbox-palco]');
   tituloEl = dialog.querySelector('[data-lightbox-titulo]');
   cta = dialog.querySelector('[data-lightbox-cta]');
+  caixa = dialog.querySelector('[data-lightbox-caixa]');
 
-  dialog.querySelector('[data-lightbox-fechar]')?.addEventListener('click', () => dialog.close());
+  dialog.querySelector('[data-lightbox-fechar]')?.addEventListener('click', fecharVideo);
   // Clique fora da caixa (no fundo escuro) fecha.
-  dialog.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
+  dialog.addEventListener('click', (e) => { if (e.target === dialog) fecharVideo(); });
+  // Esc: segura o fechamento nativo para tocar a saída.
+  dialog.addEventListener('cancel', (e) => { e.preventDefault(); fecharVideo(); });
   // Ao fechar (botão, Esc ou clique fora): para o vídeo e devolve o foco.
   dialog.addEventListener('close', () => {
+    caixa?.classList.remove('is-open', 'is-closing');
     palco.replaceChildren();
     document.dispatchEvent(new CustomEvent('wee:trava', { detail: false }));
     ultimoFoco?.focus?.();
   });
   // O link de orçamento dentro do lightbox leva ao contato: fecha antes de rolar.
-  cta?.addEventListener('click', () => { if (cta.getAttribute('href') === '#contato') dialog.close(); });
+  cta?.addEventListener('click', () => { if (cta.getAttribute('href') === '#contato') fecharVideo(); });
 }

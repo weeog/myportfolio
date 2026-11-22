@@ -41,7 +41,7 @@ export function pausarForaDaTela() {
   const observador = new IntersectionObserver((entradas) => {
     entradas.forEach((e) => e.target.classList.toggle('pausada', !e.isIntersecting));
   }, { rootMargin: '200px 0px' }); // retoma um pouco antes de a seção aparecer
-  document.querySelectorAll('.hero, .showreel, .sobre-mim').forEach((secao) => observador.observe(secao));
+  document.querySelectorAll('.hero, .showreel, .sobre').forEach((secao) => observador.observe(secao));
 }
 
 /** Disco que segue o mouse e vira rótulo ("PLAY" sobre vídeos, "VER" sobre links). Só desktop. */
