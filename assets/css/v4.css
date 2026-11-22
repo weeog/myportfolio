@@ -225,34 +225,61 @@ p, h1, h2, h3, dl, dd, figure { margin: 0; }
 }
 @keyframes wee-respira { to { transform: translate(-12vw, 10vh) scale(1.15); opacity: .35; } }
 .hero__meta { display: flex; justify-content: space-between; gap: var(--s-4); color: var(--c-mudo-escuro); }
-.hero__conteudo { display: grid; align-content: center; gap: var(--s-6); padding-block: var(--s-7); }
+/* Frase do hero em formato de citação: centralizada, menor, entre aspas grandes (sem autor) */
+.hero__conteudo { display: grid; justify-items: center; align-content: center; gap: var(--s-6); padding-block: var(--s-7); text-align: center; }
 .hero__titulo {
+  position: relative;
+  max-width: 22ch;
+  padding-top: .9em;
   font-family: var(--f-display);
   font-weight: 700;
-  font-size: clamp(50px, 12.6vw, 92px);
-  line-height: .9;
-  letter-spacing: -.005em;
+  font-size: clamp(30px, 8.6vw, 44px);
+  line-height: 1;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
-.hero__titulo .acento { font-size: .82em; line-height: 1; display: inline-block; padding: 0 .08em .06em 0; }
+/* Aspas decorativas: a de abertura em cima, centralizada; a de fechamento colada no fim da frase */
+.hero__titulo::before {
+  content: "\201C" / "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 2.6em;
+  line-height: .7;
+  color: var(--c-rec);
+  pointer-events: none;
+}
+.hero__titulo .hero__frase:last-of-type::after {
+  content: "\201D" / "";
+  display: inline-block;
+  margin-left: .08em;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.1em;
+  line-height: 0;
+  vertical-align: -.25em;
+  color: var(--c-rec);
+}
+.hero__titulo .acento { font-size: .86em; line-height: 1; display: inline-block; padding: 0 .06em .06em 0; }
 .hero__frase { display: inline; }
-.hero__ctas { display: flex; flex-wrap: wrap; gap: var(--s-3); }
+.hero__ctas { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--s-3); }
 @media (min-width: 768px) {
-  .hero__titulo { font-size: clamp(56px, 7.6vw, 140px); }
+  .hero__titulo { max-width: none; font-size: clamp(40px, 4.4vw, 76px); }
   .hero__frase { display: block; }
-  .hero__frase--recuo { padding-left: .7em; }
 }
 
-/* Segurança: se o JS de animação não chegar, o hero aparece sozinho */
+/* Entrada do hero só em CSS: começa no carregamento, sem esperar o GSAP do CDN (evita a piscada) */
 .js-anim .hero__meta,
 .js-anim .hero__titulo,
 .js-anim .hero__ctas,
-.js-anim .faixa { opacity: 0; animation: wee-mostra 0s 1.8s forwards; }
-.hero-pronto .hero__meta,
-.hero-pronto .hero__titulo,
-.hero-pronto .hero__ctas,
-.hero-pronto .faixa { opacity: 1; animation: none; }
-@keyframes wee-mostra { to { opacity: 1; } }
+.js-anim .faixa { animation: wee-entra 1s var(--ease-saida) both; }
+.js-anim .hero__meta { animation-delay: .05s; }
+.js-anim .hero__titulo { animation-delay: .12s; }
+.js-anim .hero__ctas { animation-delay: .35s; }
+.js-anim .faixa { animation-name: wee-entra-lado; animation-duration: 1.4s; animation-delay: .45s; }
+@keyframes wee-entra { from { opacity: 0; transform: translateY(28px); } }
+@keyframes wee-entra-lado { from { opacity: 0; transform: translateX(12%); } }
 
 /* "criança" em blocos (refinados: menos inclinação, sombra seca) */
 .nao-quebrar { white-space: nowrap; }
@@ -688,14 +715,14 @@ p, h1, h2, h3, dl, dd, figure { margin: 0; }
   line-height: .85;
   text-transform: uppercase;
   white-space: nowrap;
-  color: var(--c-rec);
+  color: #FF4D1F; /* fixo: o contato não entra na vibe verde de Meu Olhar */
   will-change: transform;
 }
 .contato__grade { display: grid; gap: var(--s-8); }
 .contato__chamada { display: grid; gap: var(--s-4); justify-items: start; }
 .contato__titulo { font-family: var(--f-display); font-weight: 700; font-size: var(--fs-display-l); line-height: .9; text-transform: uppercase; margin-bottom: var(--s-3); }
 .contato .btn--primario { background: var(--c-tinta); color: var(--c-papel); }
-.contato .btn--primario::before { background: var(--c-rec); }
+.contato .btn--primario::before { background: #FF4D1F; }
 @media (hover: hover) and (pointer: fine) { .contato .btn--primario:hover { color: var(--c-tinta); } }
 .contatos { display: grid; align-content: start; }
 .contatos__item {
@@ -710,9 +737,38 @@ p, h1, h2, h3, dl, dd, figure { margin: 0; }
 .contatos__item:last-child { border-bottom: 1px solid rgba(20, 18, 16, .14); }
 .contatos__item dt { color: var(--c-mudo-claro); }
 .contatos__item dd { min-width: 0; overflow-wrap: anywhere; }
-@media (min-width: 1024px) {
-  .contato__grade { grid-template-columns: 1fr 1fr; align-items: start; }
+.contato__chamada { justify-items: center; text-align: center; }
+.contato__atuacao { display: flex; align-items: baseline; gap: var(--s-3); margin-top: var(--s-3); font-size: 17px; }
+.contato__atuacao .rotulo { color: var(--c-mudo-claro); }
+
+/* Botões redondos de contato — mesma lógica do site Gato Preto (só ícone, borda grossa, sombra dura, inclina no hover) */
+.redes { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--s-4); margin-top: var(--s-2); }
+.redes__botao {
+  --redes-linha: var(--c-tinta);
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  border: 3px solid var(--redes-linha);
+  border-radius: 50%;
+  background: #fff;
+  color: var(--c-tinta);
+  box-shadow: 0 5px 0 var(--redes-linha);
+  transition: transform 180ms var(--ease-saida), box-shadow 180ms var(--ease-saida);
 }
+.redes__botao--whats { background: #FF4D1F; }
+.redes__botao .icone { width: 32px; height: 32px; }
+.redes__botao .marca { width: 34px; height: auto; }
+.redes__botao .marca--instagram { width: 52px; } /* o SVG tem margem própria */
+.redes__botao:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--redes-linha); }
+@media (hover: hover) and (pointer: fine) {
+  .redes__botao:hover { transform: translateY(-3px) rotate(-6deg); box-shadow: 0 8px 0 var(--redes-linha); }
+}
+.contato .redes__botao:focus-visible { outline: 3px solid var(--c-tinta); outline-offset: 4px; }
+/* No menu escuro, a borda e a sombra ficam claras */
+.redes--menu { justify-content: flex-start; }
+.redes--menu .redes__botao { --redes-linha: var(--c-luz); }
+@media (prefers-reduced-motion: reduce) { .redes__botao { transition: none; } }
 
 /* ---------- 7. Rodapé ---------- */
 .rodape { padding-block: var(--s-8) max(var(--s-6), env(safe-area-inset-bottom)); background: var(--c-tinta); }
@@ -842,4 +898,95 @@ p, h1, h2, h3, dl, dd, figure { margin: 0; }
   .bloco, .onepiece__chapeu, .hero__luz { animation: none; }
   .galeria__item { transition-duration: 1ms; }
   .lateral { display: none; }
+}
+
+/* =========================================================
+   CELULAR PRIMEIRO (2026-11-22, gravação do dono no Chrome do Android)
+   A maior parte dos clientes vê pelo celular. Regras:
+   - nada fica invisível esperando a rolagem (animações de celular só mexem em posição e escala);
+   - cada bloco cabe numa tela; o que desliza de lado aparece como cartão, não como texto cortado;
+   - setas dos carrosséis embaixo, fora das fotos.
+   ========================================================= */
+@media (max-width: 1023px) {
+  /* Hero: título e botões descem para perto da faixa de capas, sem vazio no meio */
+  .hero__conteudo { align-content: center; gap: var(--s-5); padding-block: var(--s-6); }
+  .faixa { padding-bottom: var(--s-5); }
+
+  /* Showreel: SHOW em cima, quadro no meio, REEL embaixo, sobrepostos de leve */
+  .showreel__palco {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    min-height: 0;
+    padding-block: var(--s-8);
+  }
+  .showreel__palco > picture { display: none; }
+  .showreel__palavra {
+    position: relative;
+    top: auto; left: auto; right: auto;
+    z-index: 0;
+    font-size: 28vw;
+    transform: none;
+  }
+  .showreel__palavra--esq { order: 1; align-self: flex-start; margin-bottom: -10vw; }
+  .quadro { order: 2; z-index: 1; align-self: center; width: min(62vw, calc(60svh * 9 / 16)); }
+  .showreel__palavra--dir { order: 3; align-self: flex-end; margin-top: -10vw; }
+  .quadro__play-icone { width: 68px; height: 68px; }
+
+  /* Sobre mim: três cartões que deslizam; cada um cabe na tela */
+  .sobre { padding-block: var(--s-8); }
+  .sobre__cabeca { margin-bottom: var(--s-5); }
+  .sobre__trilho { align-items: stretch; }
+  .painel {
+    flex: 0 0 min(84%, 520px);
+    padding: var(--s-4);
+    border-radius: 20px;
+    background: var(--c-grafite);
+  }
+  .painel--id { gap: var(--s-4); align-content: start; }
+  .painel__foto { width: 100%; height: min(46svh, 104vw); aspect-ratio: auto; border-radius: 12px; }
+  .nome-grande { font-size: clamp(50px, 14.5vw, 96px); }
+  .apelido .acento { font-size: clamp(36px, 10vw, 64px); }
+  .painel--ficha { display: grid; align-content: center; }
+  .ficha__linha { padding-block: var(--s-4); }
+  .ficha__linha:first-child { border-top: 0; }
+  .ficha__linha:last-child { border-bottom: 0; }
+  .ficha__linha dd { font-size: clamp(28px, 8.2vw, 52px); }
+  .painel--bio { display: grid; align-content: center; }
+  .painel--bio .bio { font-size: clamp(19px, 5.1vw, 28px); line-height: 1.3; }
+
+  /* Seções com carrossel */
+  .secao { padding-block: var(--s-8); }
+  .letreiro { margin-bottom: var(--s-5); }
+  .letreiro__texto { font-size: 24vw; }
+  .palavra-fundo { top: 50%; }
+
+  /* Carrosséis: mesma navegação (centro + vizinhos, setas, contador, deslize); setas embaixo, fora das fotos */
+  .galeria {
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas: "trilho trilho trilho" "esq rodape dir";
+    align-items: center;
+    gap: var(--s-4) var(--s-3);
+    margin-top: var(--s-5);
+  }
+  .galeria__trilho { grid-area: trilho; }
+  .galeria__seta { position: static; width: 48px; height: 48px; transform: none; }
+  .galeria__seta:active { transform: scale(.92); }
+  .galeria__seta--esq { grid-area: esq; }
+  .galeria__seta--dir { grid-area: dir; }
+  .galeria__rodape { grid-area: rodape; justify-self: center; flex-direction: column; gap: var(--s-2); }
+  .galeria__item.is-centro { width: 68%; }
+  .galeria__item.is-esq, .galeria__item.is-dir { width: 30%; }
+  .galeria__item.is-esq { left: 6%; }
+  .galeria__item.is-dir { left: 94%; }
+  .galeria--projetos .galeria__trilho { aspect-ratio: 1 / 1; }
+  .galeria--fotos .galeria__trilho { aspect-ratio: 1 / 1.06; }
+  .card__titulo { font-size: clamp(22px, 6.4vw, 30px); }
+
+  /* Contato */
+  .contato { padding-top: var(--s-7); }
+  .contato__letreiro { margin-bottom: var(--s-6); }
+  .contato__frase { font-size: 24vw; }
+  .contato__grade { gap: var(--s-7); }
+  .contatos__item { grid-template-columns: 92px 1fr; padding-block: var(--s-4); font-size: 17px; }
 }

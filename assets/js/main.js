@@ -5,7 +5,7 @@ import { iniciarLightbox, abrirVideo } from './lightbox.js';
 import { iniciarAnimacoes } from './animacoes.js';
 import { iniciarGaleria } from './galeria.js';
 import { cursorVideo, pausarForaDaTela } from './efeitos.js';
-import { iniciarIntro, iniciarTransicoes } from './transicao.js';
+import { iniciarTransicoes } from './transicao.js';
 
 const contato = window.WEE_CONTATO || {};
 const dados = window.WEE_PROJETOS || { showreel: {}, projetos: [] };
@@ -39,7 +39,8 @@ function preencherContatos() {
   document.querySelectorAll('[data-contato]').forEach((no) => {
     const v = valores[no.dataset.contato];
     if (!v) { no.classList.add('preencher'); return; }
-    no.textContent = v.texto;
+    // Botões de ícone (data-rotulo-fixo): só o link muda, o conteúdo fica (mesma lógica do Gato Preto).
+    if (!no.hasAttribute('data-rotulo-fixo')) no.textContent = v.texto;
     if (no.tagName === 'A' && v.href) {
       no.href = v.href;
       if (v.externo) { no.target = '_blank'; no.rel = 'noopener'; }
@@ -267,7 +268,7 @@ function iniciarFlutuante() {
   observador.observe(fim);
 }
 
-iniciarIntro();          // antes de tudo: a entrada do hero espera a intro
+// Intro de carregamento removida a pedido do dono (2026-11-22): o hero entra direto.
 preencherContatos();
 iniciarWhats();
 iniciarMenu();

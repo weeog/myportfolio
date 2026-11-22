@@ -170,10 +170,12 @@ function showreel(gsap, mm) {
   });
 
   mm.add(CELULAR, () => {
-    const st = { trigger: palco, start: 'top bottom', end: 'center center', scrub: .6 };
-    gsap.fromTo(quadro, { scale: .78, rotate: -5 }, { scale: 1, rotate: 0, ease: 'none', scrollTrigger: st });
-    gsap.fromTo(esq, { xPercent: 4 }, { xPercent: -30, ease: 'none', scrollTrigger: { ...st, end: 'bottom top' } });
-    gsap.fromTo(dir, { xPercent: -4 }, { xPercent: 30, ease: 'none', scrollTrigger: { ...st, end: 'bottom top' } });
+    // Celular: SHOW em cima e REEL embaixo do quadro, andando de lado em sentidos opostos (sempre visíveis).
+    const st = { trigger: palco, start: 'top bottom', end: 'bottom top', scrub: .5 };
+    gsap.fromTo(quadro, { scale: .86, rotate: -4 }, { scale: 1, rotate: 0, ease: 'none', scrollTrigger: { ...st, end: 'center center' } });
+    // No meio da tela as duas palavras ficam inteiras (x = 0); entram e saem pelos lados.
+    gsap.fromTo(esq, { xPercent: 40 }, { xPercent: -12, ease: 'none', scrollTrigger: st });
+    gsap.fromTo(dir, { xPercent: -40 }, { xPercent: 12, ease: 'none', scrollTrigger: st });
     return () => gsap.set([quadro, esq, dir], { clearProps: 'all' });
   });
 }
@@ -218,9 +220,7 @@ function sobreLateral(gsap, mm) {
   });
 
   mm.add(CELULAR, () => {
-    // Deslize nativo (scroll-snap): os painéis entram de lado na primeira vez e a barra segue o dedo.
-    gsap.from(pin.querySelectorAll('.painel'), { x: 120, autoAlpha: 0, duration: 1.1, stagger: .1, ease: 'expo.out',
-      scrollTrigger: { trigger: trilho, start: 'top 80%', once: true } });
+    // Deslize nativo (scroll-snap); a barra segue o dedo. Nada fica escondido esperando a rolagem.
     const medir = () => {
       const max = trilho.scrollWidth - trilho.clientWidth;
       gsap.set(barra, { scaleX: max > 0 ? Math.max(.08, trilho.scrollLeft / max) : 1 });
@@ -247,8 +247,21 @@ function letreiros(gsap) {
   }
 }
 
-/* ---------- Seções: painel que abre (clip-path) e títulos por linha ---------- */
-function entradaSecoes(gsap) {
+/* ---------- Seções: painel que abre (clip-path) e títulos por linha ----------
+   Só no desktop. No celular nada fica escondido esperando a rolagem: no toque rápido
+   o conteúdo passava vazio (gravação do dono, 2026-11-22). */
+function entradaSecoes(gsap, mm) {
+  mm.add(DESKTOP, () => entradaSecoesDesktop(gsap));
+  // Celular: os carrosséis "chegam perto" com a rolagem (só escala, sempre visíveis).
+  mm.add(CELULAR, () => {
+    gsap.utils.toArray('.galeria__trilho').forEach((trilho) => {
+      gsap.fromTo(trilho, { scale: .9 }, { scale: 1, ease: 'none',
+        scrollTrigger: { trigger: trilho, start: 'top bottom', end: 'center center', scrub: .4 } });
+    });
+  });
+}
+
+function entradaSecoesDesktop(gsap) {
   gsap.utils.toArray('.projetos, .contato').forEach((secao) => {
     gsap.fromTo(secao,
       { clipPath: 'inset(8% 5% 0% 5% round 40px)' },
@@ -271,9 +284,10 @@ function entradaSecoes(gsap) {
     });
   });
 
-  gsap.from('.contatos__item', {
-    y: 30, autoAlpha: 0, duration: .9, stagger: .08, ease: 'expo.out',
-    scrollTrigger: { trigger: '.contatos', start: 'top 85%', once: true }
+  // Botões redondos do contato caem um a um com um pulo.
+  gsap.from('.contato .redes__botao', {
+    y: -40, rotate: -20, autoAlpha: 0, duration: 1, stagger: .1, ease: 'bounce.out', clearProps: 'transform,opacity,visibility',
+    scrollTrigger: { trigger: '.contato .redes', start: 'top 90%', once: true }
   });
 
   // Palavra de categoria atrás do carrossel: cresce devagar enquanto a seção passa.
@@ -347,12 +361,12 @@ export async function iniciarAnimacoes() {
   iniciarLenis(gsap, ScrollTrigger);
 
   const mm = gsap.matchMedia();
-  entradaHero(gsap);
+  // A entrada do hero agora é CSS (v4.css, wee-entra): não depende do CDN e não pisca.
   heroRolagem(gsap, ScrollTrigger);
   showreel(gsap, mm);
   sobreLateral(gsap, mm);
   letreiros(gsap);
-  entradaSecoes(gsap);
+  entradaSecoes(gsap, mm);
   magneticos(gsap);
   mudancaDeVibe(gsap);
 

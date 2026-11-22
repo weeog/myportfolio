@@ -69,14 +69,17 @@
       <a class="menu__link" href="#contato"><span class="menu__num">05</span>Contato</a>
     </nav>
     <div class="menu__rodape">
-      <a class="btn btn--primario" data-wa data-origem="menu" href="#contato">
-        <svg class="icone" aria-hidden="true"><use href="#i-whats"/></svg>
-        WhatsApp
-      </a>
-      <ul class="menu__contatos" role="list">
-        <li><img class="marca marca--gmail" src="./assets/img/marca-gmail.png" alt="E-mail (Gmail)" width="686" height="512"> <a class="link" data-contato="email" href="#contato">[PREENCHER: e-mail]</a></li>
-        <li><img class="marca marca--instagram" src="./assets/img/marca-instagram.svg" alt="Instagram" width="560" height="400"> <a class="link" data-contato="instagram" href="#contato">[PREENCHER: Instagram]</a></li>
-      </ul>
+      <div class="redes redes--menu">
+        <a class="redes__botao redes__botao--whats" data-wa data-origem="menu" href="#contato" aria-label="WhatsApp de wee.">
+          <svg class="icone" aria-hidden="true"><use href="#i-whats"/></svg>
+        </a>
+        <a class="redes__botao" data-contato="instagram" data-rotulo-fixo href="#contato" aria-label="Instagram de wee.">
+          <img class="marca marca--instagram" src="./assets/img/marca-instagram.svg" alt="" width="560" height="400">
+        </a>
+        <a class="redes__botao" data-contato="email" data-rotulo-fixo href="#contato" aria-label="E-mail de wee.">
+          <img class="marca marca--gmail" src="./assets/img/marca-gmail.png" alt="" width="686" height="512">
+        </a>
+      </div>
     </div>
   </div>
 
@@ -91,7 +94,7 @@
       </div>
 
       <div class="moldura-pagina hero__conteudo">
-        <h1 class="hero__titulo" id="hero-titulo"><span class="hero__frase">Com a visão de um <span class="acento">diretor</span></span> <span class="hero__frase hero__frase--recuo">e a criatividade de uma <span class="nao-quebrar"><span class="blocos"><span class="sr-only">criança</span><span class="blocos__letras" aria-hidden="true"><span class="bloco" style="--i:0;--cor:var(--c-rec)"><span class="bloco__frente">c</span><span class="bloco__topo"></span><span class="bloco__lado"></span></span><span class="bloco" style="--i:1;--cor:var(--c-luz)"><span class="bloco__frente">r</span><span class="bloco__topo"></span><span class="bloco__lado"></span></span><span class="bloco" style="--i:2;--cor:var(--c-tungstenio)"><span class="bloco__frente">i</span><span class="bloco__topo"></span><span class="bloco__lado"></span></span><span class="bloco" style="--i:3;--cor:var(--c-rec)"><span class="bloco__frente">a</span><span class="bloco__topo"></span><span class="bloco__lado"></span></span><span class="bloco" style="--i:4;--cor:var(--c-luz)"><span class="bloco__frente">n</span><span class="bloco__topo"></span><span class="bloco__lado"></span></span><span class="bloco" style="--i:5;--cor:var(--c-tungstenio)"><span class="bloco__frente">ç</span><span class="bloco__topo"></span><span class="bloco__lado"></span></span><span class="bloco" style="--i:6;--cor:var(--c-rec)"><span class="bloco__frente">a</span><span class="bloco__topo"></span><span class="bloco__lado"></span></span></span></span>,</span></span> <span class="hero__frase">seu projeto vira <span class="acento">filme</span>!</span></h1>
+        <h1 class="hero__titulo" id="hero-titulo"><span class="hero__frase">Com a visão de um <span class="acento">diretor</span></span> <span class="hero__frase">e a criatividade de uma <span class="nao-quebrar"><span class="blocos"><span class="sr-only">criança</span><span class="blocos__letras" aria-hidden="true"><span class="bloco" style="--i:0;--cor:var(--c-rec)"><span class="bloco__frente">c</span><span class="bloco__topo"></span><span class="bloco__lado"></span></span><span class="bloco" style="--i:1;--cor:var(--c-luz)"><span class="bloco__frente">r</span><span class="bloco__topo"></span><span class="bloco__lado"></span></span><span class="bloco" style="--i:2;--cor:var(--c-tungstenio)"><span class="bloco__frente">i</span><span class="bloco__topo"></span><span class="bloco__lado"></span></span><span class="bloco" style="--i:3;--cor:var(--c-rec)"><span class="bloco__frente">a</span><span class="bloco__topo"></span><span class="bloco__lado"></span></span><span class="bloco" style="--i:4;--cor:var(--c-luz)"><span class="bloco__frente">n</span><span class="bloco__topo"></span><span class="bloco__lado"></span></span><span class="bloco" style="--i:5;--cor:var(--c-tungstenio)"><span class="bloco__frente">ç</span><span class="bloco__topo"></span><span class="bloco__lado"></span></span><span class="bloco" style="--i:6;--cor:var(--c-rec)"><span class="bloco__frente">a</span><span class="bloco__topo"></span><span class="bloco__lado"></span></span></span></span>,</span></span> <span class="hero__frase">seu projeto vira <span class="acento">filme</span>!</span></h1>
         <div class="hero__ctas">
           <a class="btn btn--primario" data-wa data-origem="hero" href="#contato">
             <svg class="icone" aria-hidden="true"><use href="#i-whats"/></svg>
@@ -252,17 +255,20 @@
         <div class="contato__chamada">
           <p class="rotulo">Contato</p>
           <h2 class="contato__titulo" id="contato-titulo">Vamos <span class="acento">trabalhar?</span></h2>
-          <a class="btn btn--primario btn--grande" data-wa data-origem="cta-final" href="#contato">
-            <svg class="icone" aria-hidden="true"><use href="#i-whats"/></svg>
-            Chamar no WhatsApp
-          </a>
+          <!-- Botões redondos de contato (mesma lógica do site Gato Preto): só o ícone, o link vem de data/contato.js -->
+          <div class="redes">
+            <a class="redes__botao redes__botao--whats" data-wa data-origem="cta-final" href="#contato" aria-label="WhatsApp de wee.">
+              <svg class="icone" aria-hidden="true"><use href="#i-whats"/></svg>
+            </a>
+            <a class="redes__botao" data-contato="instagram" data-rotulo-fixo href="#contato" aria-label="Instagram de wee.">
+              <img class="marca marca--instagram" src="./assets/img/marca-instagram.svg" alt="" width="560" height="400">
+            </a>
+            <a class="redes__botao" data-contato="email" data-rotulo-fixo href="#contato" aria-label="E-mail de wee.">
+              <img class="marca marca--gmail" src="./assets/img/marca-gmail.png" alt="" width="686" height="512">
+            </a>
+          </div>
+          <p class="contato__atuacao"><span class="rotulo">Atuação</span> <span data-contato="cidade">[PREENCHER: cidade ou região]</span></p>
         </div>
-        <dl class="contatos">
-          <div class="contatos__item"><dt class="rotulo">WhatsApp</dt><dd><a class="link" data-contato="whatsapp" href="#contato">[PREENCHER: WhatsApp]</a></dd></div>
-          <div class="contatos__item"><dt><img class="marca marca--gmail" src="./assets/img/marca-gmail.png" alt="E-mail (Gmail)" width="686" height="512"></dt><dd><a class="link" data-contato="email" href="#contato">[PREENCHER: e-mail]</a></dd></div>
-          <div class="contatos__item"><dt><img class="marca marca--instagram" src="./assets/img/marca-instagram.svg" alt="Instagram" width="560" height="400"></dt><dd><a class="link" data-contato="instagram" href="#contato">[PREENCHER: Instagram]</a></dd></div>
-          <div class="contatos__item"><dt class="rotulo">Atuação</dt><dd data-contato="cidade">[PREENCHER: cidade ou região]</dd></div>
-        </dl>
       </div>
     </section>
   </main>
