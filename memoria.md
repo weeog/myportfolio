@@ -4,6 +4,13 @@
 
 ---
 
+## Estado atual (2026-11-22) — ler primeiro
+
+- **No ar:** https://weeogart.vercel.app (Vercel ligada ao `weeog/myportfolio`, `main`; push publica sozinho). Último commit `f515acf`. Conferido: versão nova no ar, cabeçalhos de segurança ativos, `memoria.md`/`CLAUDE.md`/`specs`/`.claude` dão 404.
+- **Visual:** v4 "cinema escuro refinado" (`assets/css/v4.css`, `assets/js/animacoes.js`). Celular é a tela principal (bloco "CELULAR PRIMEIRO" no fim do `v4.css`).
+- **Testar local:** configuração `portfolio-wee` do `.claude/launch.json` da pasta raiz (porta 5520).
+- **Pendente:** teste num celular real; licença das fontes demo; capa do showreel em 1080×1920.
+
 ## Decisões aprovadas
 
 - **2026-11-21** · **Redesenho v4 "cinema escuro refinado"** (pedido do dono via /wee: "design mais profissional e animado, mantendo todas as informações; manter a forma de navegar pelos trabalhos de vídeo e foto"; depois: "cinema escuro refinado, faça scroll laterais, brinque com animações e não use 'enquadramento REC' genérico"). Substitui o visual "Em cena" de `specs/design.md` §1, §7 (cantos de enquadramento), §12.2 #1, #3, #4, #5. Mantido: todo o conteúdo e contatos, paleta base (Película/REC/Tungstênio/Papel), fontes Rodmolle/Milesdane (pergunta de troca de fontes ficou sem resposta → mantidas), blocos de "criança", chapéu do One Piece, vibe verde de Meu Olhar, carrosséis com `galeria.js` intacto (centro + vizinhos, setas, contador, teclado, deslize, clique nos laterais), lightbox, WhatsApp único, APNG laterais do showreel. Saíram: indicador REC/timecode, cantos de enquadramento, régua de timecode, fundo degradê, corte diagonal, cartão de identidade (os campos viraram a "ficha").
