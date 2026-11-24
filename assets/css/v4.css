@@ -993,10 +993,10 @@ p, h1, h2, h3, dl, dd, figure { margin: 0; }
 
 /* =========================================================
    RELEITURA 2026-11-24 (referência em vídeo enviada pelo dono)
-   O que entrou: faixas cruzadas de serviços em loop, "Como funciona"
-   em quatro cartões numerados com luz vermelha ao fundo, lâmina
-   vermelha com frase que se endireita na rolagem e o convite para
-   ver mais no Instagram depois dos Projetos.
+   O que entrou: faixas cruzadas de serviços em loop, lâmina laranja
+   com frase que se endireita na rolagem e o convite para ver mais
+   no Instagram depois dos Projetos. ("Como funciona" saiu a pedido
+   do dono no mesmo dia.)
    Celular primeiro: nada disso fica invisível esperando a rolagem.
    ========================================================= */
 
@@ -1055,76 +1055,6 @@ p, h1, h2, h3, dl, dd, figure { margin: 0; }
 .mais-trabalhos p { max-width: 46ch; font-size: var(--fs-corpo-l); line-height: 1.4; }
 .mais-trabalhos strong { display: block; font-weight: 600; }
 
-/* ---------- Como funciona ---------- */
-.processo { isolation: isolate; }
-.processo__luz {
-  position: absolute;
-  left: 50%;
-  top: 55%;
-  z-index: -1;
-  width: 110vmax;
-  height: 70vmax;
-  border-radius: 50%;
-  background: radial-gradient(closest-side, color-mix(in srgb, var(--c-rec) 30%, transparent), transparent 72%);
-  transform: translate(-50%, -50%);
-  animation: wee-respira-centro 10s ease-in-out infinite alternate;
-  pointer-events: none;
-}
-@keyframes wee-respira-centro { to { transform: translate(-46%, -54%) scale(1.12); opacity: .7; } }
-.passos {
-  display: grid;
-  gap: var(--s-3);
-  margin: var(--s-7) 0 0;
-  padding: 0;
-  list-style: none;
-  counter-reset: passo;
-}
-.passo {
-  position: relative;
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: var(--s-1) var(--s-4);
-  align-items: baseline;
-  padding: var(--s-5);
-  border: 1px solid var(--linha);
-  border-radius: 20px;
-  background: color-mix(in srgb, var(--c-grafite) 82%, transparent);
-  transition: border-color 300ms var(--ease-forte), transform 300ms var(--ease-forte), box-shadow 300ms var(--ease-forte);
-}
-.passo__num {
-  grid-row: span 2;
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: var(--c-rec);
-  color: var(--c-tinta);
-  font-family: var(--f-texto);
-  font-weight: 700;
-  font-size: 15px;
-  font-variant-numeric: tabular-nums;
-  box-shadow: 0 0 0 6px color-mix(in srgb, var(--c-rec) 18%, transparent);
-}
-.passo__titulo { font-family: var(--f-display); font-weight: 700; font-size: var(--fs-display-m); line-height: 1; text-transform: uppercase; }
-.passo__texto { color: var(--c-mudo-escuro); font-size: 15px; line-height: 1.45; }
-@media (hover: hover) and (pointer: fine) {
-  .passo:hover {
-    border-color: color-mix(in srgb, var(--c-rec) 70%, transparent);
-    transform: translateY(-6px);
-    box-shadow: 0 24px 60px -24px color-mix(in srgb, var(--c-rec) 70%, transparent);
-  }
-}
-@media (min-width: 768px) {
-  .passos { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-4); }
-}
-@media (min-width: 1024px) {
-  .passos { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  .passo { grid-template-columns: 1fr; align-content: start; min-height: 260px; padding: var(--s-6) var(--s-5); }
-  .passo__num { grid-row: auto; margin-bottom: var(--s-6); }
-  .passo__titulo { margin-bottom: var(--s-2); }
-}
-
 /* ---------- Lâmina vermelha ---------- */
 .lamina {
   position: relative;
@@ -1149,15 +1079,12 @@ p, h1, h2, h3, dl, dd, figure { margin: 0; }
 .lamina__fim { display: block; }
 
 @media (prefers-reduced-motion: reduce) {
-  .faixas__trilho, .processo__luz { animation: none; }
-  .passo { transition: none; }
+  .faixas__trilho { animation: none; }
 }
 @media (max-width: 1023px) {
   .faixas { height: 150px; }
   .mais-trabalhos { margin-top: var(--s-6); padding: var(--s-4); }
   .mais-trabalhos .btn { width: 100%; }
-  .passos { margin-top: var(--s-5); }
-  .passo { padding: var(--s-4); }
   .lamina { padding-block: var(--s-6); }
   .lamina__texto { font-size: 11vw; }
 }

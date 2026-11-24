@@ -79,6 +79,8 @@
 
 ## Alterações realizadas
 
+- **2026-11-24** · **"Como funciona" removida** (pedido do dono: "tire essa seção como funciona, não tinha isso"). Saíram a seção, o link no menu (volta a 01–05) e no rodapé e o CSS `.processo`/`.passo`. Ficam as faixas cruzadas, o convite ao Instagram e a lâmina laranja (agora logo depois de Projetos). **Não recriar "Como funciona" sem pedido.**
+
 - **2026-11-24** · **Releitura de um portfólio de referência** (pedido do dono via /wee: vídeo `VID-20261124-WA0003.mp4`, site de outro videomaker em vermelho e preto; "integre o que for útil e bonito e suba"). Nada copiado (texto, nome, layout); só ideias de estrutura. Entraram: (1) **faixas cruzadas** em loop logo depois do hero, uma laranja (Festas · Eventos · Motions) e uma grafite (Edição · Captação · Roteiro, tirados da bio), giram com a rolagem; (2) **convite para o Instagram** no fim de Projetos ("Essa é só uma parte." + botão "Ver no Instagram", link de `data/contato.js`); (3) **seção "Como funciona"** (`#como-funciona`, entre Projetos e Meu Olhar) com 4 cartões numerados (Conversa, Roteiro, Gravação, Edição e entrega) e luz vermelha respirando ao fundo, também no menu e no rodapé; (4) **lâmina laranja** com a frase "Festas, eventos e motions com cara de filme." que se endireita com a rolagem (cor fixa, fora da vibe verde). Isso decide a pendência "Como funciona" de `site.md` §6.1/§9: as etapas vêm da bio do dono (roteiro, captação, edição), sem prazos nem preços; o dono pode trocar os textos. Animações novas em `animacoes.js` (`faixasELamina`), só giro/escala; CSS no fim do `v4.css` (bloco "RELEITURA 2026-11-24"). Testado em 375×812 e 1440×900: sem rolagem lateral, nada invisível, sem erro no console. Hash da CSP não mudou (o `<head>` não foi mexido).
 
 - **2026-11-22** · **Frase do hero como citação + botões de contato do Gato Preto** (pedido do dono). (1) "Com a visão de um diretor..." centralizada e menor (celular ~35 px, desktop `clamp(40px, 4.4vw, 76px)`), entre aspas laranja em Georgia (abertura em cima, fechamento colado em "filme!"), **sem autor**; botões do hero centralizados. Texto da frase sem alteração. (2) Contato e menu: a lista com número/e-mail/@ e o botão "Chamar no WhatsApp" viraram botões redondos só de ícone, como em "Fale com o gato" (`.redes`/`.redes__botao`: 72 px, borda de 3 px, sombra dura, sobe e inclina no hover, afunda no toque): WhatsApp (laranja, ícone), Instagram e E-mail (fundo branco com as logos de terceiros já escolhidas pelo dono). Links vêm de `data/contato.js`; `preencherContatos` respeita `data-rotulo-fixo` (só troca o href). "Atuação: Botucatu e Região" continua em texto. No desktop os botões caem com pulo ao entrar; no celular ficam sempre visíveis. Testado em 412, 390 e 1440 px: links certos (wa.me com mensagem, instagram.com/rec.wee, mailto), sem erro no console.
@@ -320,7 +322,7 @@
 - [x] Aprovar as mensagens prontas do WhatsApp em site.md §8. *(aprovado em 2026-11-12)*
 - [ ] Decidir como obter a Inter Tight para hospedar no site: o dono baixa e coloca em `assets/fonts/`, ou autoriza o download. Até lá o texto usa a fonte do sistema.
 - [ ] Informar quantos projetos existem no total (define os 8 destaques).
-- [x] Decidir se entra a seção "Como funciona". *(entrou em 2026-11-24, com as etapas da bio)*
+- [x] Decidir se entra a seção "Como funciona". *(2026-11-24: o dono recusou; não entra)*
 - [ ] Escolher hospedagem, domínio e ferramenta de medição.
 
 **Bloqueante para publicar:**
