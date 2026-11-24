@@ -341,6 +341,23 @@ function mudancaDeVibe(gsap) {
     .to(raiz, { ...original, duration: .2 });
 }
 
+/* ---------- Releitura 2026-11-24: faixas cruzadas e lâmina vermelha ----------
+   Só giro e escala presos à rolagem (nada some no celular). */
+function faixasELamina(gsap) {
+  const faixas = document.querySelector("[data-faixas]");
+  if (faixas) {
+    const [luz, rec] = faixas.querySelectorAll(".faixas__fita");
+    const st = { trigger: faixas, start: "top bottom", end: "bottom top", scrub: .6 };
+    gsap.fromTo(rec, { rotate: -8, yPercent: 30 }, { rotate: -2, yPercent: -30, ease: "none", scrollTrigger: st });
+    gsap.fromTo(luz, { rotate: 7, yPercent: -30 }, { rotate: 1, yPercent: 30, ease: "none", scrollTrigger: st });
+  }
+  const lamina = document.querySelector("[data-lamina-texto]");
+  if (lamina) {
+    gsap.fromTo(lamina, { rotate: -7, scale: .9 }, { rotate: 0, scale: 1, ease: "none",
+      scrollTrigger: { trigger: lamina.parentElement, start: "top bottom", end: "center center", scrub: .6 } });
+  }
+}
+
 export async function iniciarAnimacoes() {
   if (menosMovimento.matches) return;
 
@@ -366,6 +383,7 @@ export async function iniciarAnimacoes() {
   showreel(gsap, mm);
   sobreLateral(gsap, mm);
   letreiros(gsap);
+  faixasELamina(gsap);
   entradaSecoes(gsap, mm);
   magneticos(gsap);
   mudancaDeVibe(gsap);

@@ -65,8 +65,9 @@
       <a class="menu__link" href="#showreel"><span class="menu__num">01</span>Showreel</a>
       <a class="menu__link" href="#sobre-mim"><span class="menu__num">02</span>Sobre mim</a>
       <a class="menu__link" href="#projetos"><span class="menu__num">03</span>Projetos</a>
-      <a class="menu__link" href="#meu-olhar"><span class="menu__num">04</span>Meu Olhar</a>
-      <a class="menu__link" href="#contato"><span class="menu__num">05</span>Contato</a>
+      <a class="menu__link" href="#como-funciona"><span class="menu__num">04</span>Como funciona</a>
+      <a class="menu__link" href="#meu-olhar"><span class="menu__num">05</span>Meu Olhar</a>
+      <a class="menu__link" href="#contato"><span class="menu__num">06</span>Contato</a>
     </nav>
     <div class="menu__rodape">
       <div class="redes redes--menu">
@@ -109,6 +110,23 @@
         <div class="faixa__trilho" data-faixa-trilho></div>
       </div>
     </section>
+
+    <!-- Faixas cruzadas: o que eu faço, em loop (releitura da ref. de 2026-11-24) -->
+    <div class="faixas" data-faixas>
+      <p class="sr-only">O que eu faço: festas, eventos, motions, edição, captação e roteiro.</p>
+      <div class="faixas__fita faixas__fita--luz" aria-hidden="true">
+        <div class="faixas__trilho faixas__trilho--volta">
+          <span>Edição</span><i>✦</i><span>Captação</span><i>✦</i><span>Roteiro</span><i>✦</i><span>Edição</span><i>✦</i><span>Captação</span><i>✦</i><span>Roteiro</span><i>✦</i>
+          <span>Edição</span><i>✦</i><span>Captação</span><i>✦</i><span>Roteiro</span><i>✦</i><span>Edição</span><i>✦</i><span>Captação</span><i>✦</i><span>Roteiro</span><i>✦</i>
+        </div>
+      </div>
+      <div class="faixas__fita faixas__fita--rec" aria-hidden="true">
+        <div class="faixas__trilho">
+          <span>Festas</span><i>✦</i><span>Eventos</span><i>✦</i><span>Motions</span><i>✦</i><span>Festas</span><i>✦</i><span>Eventos</span><i>✦</i><span>Motions</span><i>✦</i>
+          <span>Festas</span><i>✦</i><span>Eventos</span><i>✦</i><span>Motions</span><i>✦</i><span>Festas</span><i>✦</i><span>Eventos</span><i>✦</i><span>Motions</span><i>✦</i>
+        </div>
+      </div>
+    </div>
 
     <!-- 2. SHOWREEL: SHOW e REEL se abrem para os lados e o quadro cresce -->
     <section class="showreel" id="showreel" aria-labelledby="showreel-titulo">
@@ -207,8 +225,52 @@
           </div>
         </div>
         <noscript><p class="mudo">Ative o JavaScript para ver a lista de projetos, ou peça os links pelo WhatsApp.</p></noscript>
+
+        <!-- Depois da seleção, o resto no Instagram -->
+        <div class="mais-trabalhos">
+          <p><strong>Essa é só uma parte.</strong> <span class="mudo">Tem mais festas, eventos e motions no meu Instagram.</span></p>
+          <a class="btn btn--secundario" data-contato="instagram" data-rotulo-fixo href="#contato">Ver no Instagram <svg class="icone" aria-hidden="true"><use href="#i-seta"/></svg></a>
+        </div>
       </div>
     </section>
+
+    <!-- COMO FUNCIONA: quatro passos, do papo ao filme -->
+    <section class="secao processo" id="como-funciona" aria-labelledby="processo-titulo">
+      <div class="processo__luz" aria-hidden="true"></div>
+      <div class="moldura-pagina">
+        <header class="secao__cabeca">
+          <h2 class="secao__titulo" id="processo-titulo">Como <span class="acento">funciona</span></h2>
+          <p class="rotulo mudo">Do papo ao filme</p>
+        </header>
+        <ol class="passos" role="list">
+          <li class="passo">
+            <span class="passo__num" aria-hidden="true">01</span>
+            <h3 class="passo__titulo">Conversa</h3>
+            <p class="passo__texto">Você me conta a ideia, a data e onde o vídeo vai passar.</p>
+          </li>
+          <li class="passo">
+            <span class="passo__num" aria-hidden="true">02</span>
+            <h3 class="passo__titulo">Roteiro</h3>
+            <p class="passo__texto">Monto o roteiro e as cenas antes de ligar a câmera.</p>
+          </li>
+          <li class="passo">
+            <span class="passo__num" aria-hidden="true">03</span>
+            <h3 class="passo__titulo">Gravação</h3>
+            <p class="passo__texto">Capto a festa, o evento ou a cena com olhar de diretor.</p>
+          </li>
+          <li class="passo">
+            <span class="passo__num" aria-hidden="true">04</span>
+            <h3 class="passo__titulo">Edição e entrega</h3>
+            <p class="passo__texto">Edito, acerto cor e som e entrego no formato de cada tela.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Lâmina vermelha com a frase: se endireita com a rolagem -->
+    <div class="lamina" data-lamina>
+      <p class="lamina__texto" data-lamina-texto>Festas, eventos e motions <span class="lamina__fim">com cara de filme.</span></p>
+    </div>
 
     <!-- 5. MEU OLHAR: fotografias (ao entrar, o site inteiro muda para a vibe verde) -->
     <section class="secao meu-olhar" id="meu-olhar" data-vibe-global aria-labelledby="olhar-titulo">
@@ -281,6 +343,7 @@
         <a class="rola" href="#showreel"><span data-t="Showreel">Showreel</span></a>
         <a class="rola" href="#sobre-mim"><span data-t="Sobre mim">Sobre mim</span></a>
         <a class="rola" href="#projetos"><span data-t="Projetos">Projetos</span></a>
+        <a class="rola" href="#como-funciona"><span data-t="Como funciona">Como funciona</span></a>
         <a class="rola" href="#meu-olhar"><span data-t="Meu Olhar">Meu Olhar</span></a>
         <a class="rola" href="#contato"><span data-t="Contato">Contato</span></a>
       </nav>
